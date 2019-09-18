@@ -1,5 +1,7 @@
-BEGIN_PROVIDER [integer, bidon_nucl_charge]
- implicit none
- bidon_nucl_charge = 2
- print*,'bidon_nucl_charge = ',bidon_nucl_charge
+BEGIN_PROVIDER [ integer, bsp_atomic_charge  ]
+  implicit none
+  BEGIN_DOC
+! atomic charge
+  END_DOC
+  bsp_atomic_charge = int(nucl_charge(1))
 END_PROVIDER 
