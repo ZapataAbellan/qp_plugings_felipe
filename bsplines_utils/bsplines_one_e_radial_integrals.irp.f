@@ -27,6 +27,12 @@
  nderiv=3
  allocate(values(bsp_order,nderiv))
 
+ d2r_int = 0.d0
+ dr_int  = 0.d0
+ r_int   = 0.d0
+ r1_int  = 0.d0
+ r2_int  = 0.d0
+ o_int   = 0.d0
  !integration...
  do v=1,bsp_nv
     r1=bsp_grid_knot(bsp_order+v-1)

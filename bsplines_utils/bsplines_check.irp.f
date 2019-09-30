@@ -3,10 +3,11 @@ program pouet
  integer :: i,j,k,l 
  double precision, allocatable :: s_mat_tmp(:,:)
  allocate(s_mat_tmp(ao_num,ao_num))
+ accu_2 = 0.d0
  do i = 1, ao_num
   do j = 1, ao_num
    ! compute the <i|j> = \sum_{kl} c_ik c_jl <k|l>
-   double precision :: accu
+   double precision :: accu,accu_2
    accu = 0.d0
    do k = 1, ao_num
     do l = 1, ao_num
@@ -14,13 +15,24 @@ program pouet
     enddo
    enddo
    s_mat_tmp(j,i) = accu
+   accu_2 += accu
   enddo 
  enddo
   print*,''
   print*,''
   print*,''
+  print*,'accu_2 = ',accu_2
+  print*,'ao_num = ',ao_num
+  print*,'AO overlap matrix'
   do i = 1, ao_num
    write(*,'(100(F10.5,X))')s_mat_tmp(i,:)
+  enddo
+  print*,''
+  print*,''
+  print*,''
+  print*,''
+  do i = 1, ao_num
+   write(*,'(100(F10.5,X))')ao_kinetic_integrals(i,1:ao_num)
   enddo
 
  double precision, allocatable :: H(:,:),eigvectors(:,:),eigvalues(:)
