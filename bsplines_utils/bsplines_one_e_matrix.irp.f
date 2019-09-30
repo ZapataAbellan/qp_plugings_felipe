@@ -1,5 +1,5 @@
- BEGIN_PROVIDER [double precision,  block_t1_ij  , (bsp_dim,bsp_dim)]
-&BEGIN_PROVIDER [double precision,  block_t2_ij  , (bsp_dim,bsp_dim)]
+ BEGIN_PROVIDER [double precision,  block_t1_ij      , (bsp_dim,bsp_dim)]
+&BEGIN_PROVIDER [double precision,  block_t2_ij      , (bsp_dim,bsp_dim)]
 &BEGIN_PROVIDER [double precision,  block_bsp_s_ij   , (bsp_dim,bsp_dim)]
 &BEGIN_PROVIDER [double precision,  block_bsp_v_ij   , (bsp_dim,bsp_dim)]
 

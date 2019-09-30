@@ -12,7 +12,7 @@ program change_basis
 
  integer :: ao_num_new
  PROVIDE ezfio_filename
- ao_num_new = bsp_dim
+ ao_num_new = bsp_total_dim
  ! First you change the size of the AO basis
  call routine_ao_num(ao_num_new)
  ! Then the number of primitives per AO
@@ -101,25 +101,25 @@ subroutine write_bsplines_one_e_integrals
  call ezfio_set_ao_one_e_ints_ao_integrals_kinetic(bsp_t_ij)
  call ezfio_set_ao_one_e_ints_ao_integrals_e_n(bsp_v_ij)
 
- integer :: j,i
- print*,''
- print*,''
- print*,'AO overlap matrix'
- print*,''
- do i = 1, bsp_dim
-  write(*,'(100(F18.14,X))')bsp_s_ij(i,:)
-  do j = 1, bsp_dim
-   if(dabs(bsp_s_ij(i,j)).gt.1.d+2)then
-    print*,''
-    print*,''
-    print*,i,j,bsp_s_ij(i,j)
-    print*,''
-    print*,''
-   endif
-  enddo
- enddo
- print*,'AO overlap matrix'
- print*,'AO overlap matrix'
+! integer :: j,i
+! print*,''
+! print*,''
+! print*,'AO overlap matrix'
+! print*,''
+! do i = 1, bsp_dim
+!  write(*,'(100(F18.14,X))')bsp_s_ij(i,:)
+!  do j = 1, bsp_dim
+!   if(dabs(bsp_s_ij(i,j)).gt.1.d+2)then
+!    print*,''
+!    print*,''
+!    print*,i,j,bsp_s_ij(i,j)
+!    print*,''
+!    print*,''
+!   endif
+!  enddo
+! enddo
+! print*,'AO overlap matrix'
+! print*,'AO overlap matrix'
  
  call ezfio_set_ao_one_e_ints_io_ao_integrals_e_n('Read')
  call ezfio_set_ao_one_e_ints_io_ao_integrals_kinetic('Read')

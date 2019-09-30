@@ -16,12 +16,12 @@ program pouet
    s_mat_tmp(j,i) = accu
   enddo 
  enddo
- print*,''
- print*,''
- print*,''
- do i = 1, ao_num
-  write(*,'(100(F10.5,X))')s_mat_tmp(i,:)
- enddo
+  print*,''
+  print*,''
+  print*,''
+  do i = 1, ao_num
+   write(*,'(100(F10.5,X))')s_mat_tmp(i,:)
+  enddo
 
  double precision, allocatable :: H(:,:),eigvectors(:,:),eigvalues(:)
  allocate( H(ao_num,ao_num), eigvectors(ao_num,ao_num), eigvalues(ao_num) )
@@ -34,8 +34,17 @@ program pouet
     enddo
    enddo
   enddo
+  print*,'<i|H|i> = ',H(i,i)
  enddo
  call lapack_diagd(eigvalues,eigvectors,H,ao_num,ao_num)
- print*,'eigvalues = ',eigvalues(1) 
+ do i = 1, ao_num
+ print*,'eigvalues = ',i,eigvalues(i) 
+ enddo
+ 
+ print*,''
+ print*, 'two-electron integrals...'
+ print*,''
+
+! print*,'V_abcd',1,1,1,1,bsp_v_abcd(1,1,1,1)
 
 end
