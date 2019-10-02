@@ -57,6 +57,6 @@ program pouet
  print*, 'two-electron integrals...'
  print*,''
 
-! print*,'V_abcd',1,1,1,1,bsp_v_abcd(1,1,1,1)
+!print*,'<ij|kl>',1,1,1,1,bsp_vee_full(1,1,1,1)
 
 end

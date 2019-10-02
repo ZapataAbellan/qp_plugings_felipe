@@ -1,64 +1,35 @@
-!       program angular
-!       implicit none 
-!       integer::n
-!       integer::la,lc,lb,ld
-!       integer::bsp_lmax
-!       integer::k,kmin,kmax
-!       integer::s2_ac,s2_bd
-!       real(8)::special_gaunt
-!
-!       write(*,*)'lmax'
-!       read(*,*)bsp_lmax
-!      
-!       n = 0
-!       do la=0,bsp_lmax
-!        do lc=0,bsp_lmax
-!         do lb=0,bsp_lmax
-!          do ld=0,bsp_lmax
-!          !choosing the "k" expansion
-!          kmin = max(abs(la-lc),abs(lb-ld))
-!          kmax = min(abs(la+lc),abs(lb+ld))
-!          do k=kmin,kmax
-!
-!             s2_ac = la + lc + k                      
-!             s2_bd = lb + ld + k
-!
-!             if ((mod(s2_ac,2).eq.0).and.(mod(s2_bd,2).eq.0)) then
-!             
-!             n = n + 1 
-!             print*, 'la,lb,lc,ld',la,lb,lc,ld
-!             print*, 'k',k
-!             print*, 'gaunt la,k,lc',special_gaunt(la,k,lc)
-!             print*, 'gaunt lb,k,ld',special_gaunt(lb,k,ld)
-!             print*,''
-!             end if             
-!          enddo
-!          enddo
-!         enddo
-!        enddo
-!       enddo
-!       print*, ''
-!       print*,'TOTAL INTEGRALES :',n
-!       stop
-!       end
-!       
-       
-       function special_gaunt(l,k,lp)
+       function gaunt(k,l,m,lp,mp)
        implicit none
-       integer::l,lp,k
-       real(8)::three0
-       real(8)::special_gaunt
+       integer::k
+       integer::l,m
+       integer::lp,mp
+       double precision::three0,threeJ
+       double precision::coef
+       double precision::coef_1
+       double precision::coef_2
+
+       double precision::gaunt 
 
 
-
+       !Three J product...
        call ThreeJBGN(dfloat(l),0.d0,dfloat(k),0.d0,&
         &dfloat(lp),0.d0,three0)
+       
+       !Three J product...
+       call ThreeJBGN(dfloat(l),-dfloat(m),&
+            &dfloat(k),dfloat(m)-dfloat(mp),&
+            &dfloat(lp),dfloat(mp),threeJ)
 
-       special_gaunt = dsqrt(dfloat(2*l+1))*dsqrt(dfloat(2*lp+1))&
-                    &*three0**2
+       !Coefficients... 
+       coef   = (-1.d0)**(-m)
+       coef_1 = dsqrt(dfloat(2*l+1))
+       coef_2 = dsqrt(dfloat(2*lp+1))
+
+       !Gaunt coefficient... 
+       gaunt = coef*coef_1*coef_2*three0*threeJ
 
        return
-       end function special_gaunt
+       end function gaunt
     
 
 

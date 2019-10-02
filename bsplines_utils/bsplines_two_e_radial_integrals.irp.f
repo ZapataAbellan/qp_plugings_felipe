@@ -1,6 +1,6 @@
-       BEGIN_PROVIDER [double precision, roff1_kmax, (bsp_order*bsp_order,bsp_nv, bsp_lmax+1)]
-      &BEGIN_PROVIDER [double precision, roff2_kmax, (bsp_order*bsp_order,bsp_nv, bsp_lmax+1)]
-      &BEGIN_PROVIDER [double precision, rdiag_kmax, (bsp_order*bsp_order,bsp_order*bsp_order,bsp_nv, bsp_lmax+1)]
+       BEGIN_PROVIDER [double precision, roff1_kmax, (bsp_order*bsp_order,bsp_nv, 0:2*bsp_lmax)]
+      &BEGIN_PROVIDER [double precision, roff2_kmax, (bsp_order*bsp_order,bsp_nv, 0:2*bsp_lmax)]
+      &BEGIN_PROVIDER [double precision, rdiag_kmax, (bsp_order*bsp_order,bsp_order*bsp_order,bsp_nv,0:2*bsp_lmax)]
        BEGIN_DOC 
        !This provides the radial Slater Integrals up tp "k_max" for the Coulomb potential
        END_DOC
@@ -61,9 +61,13 @@
        !
        !
        !
-       !Expansion term "K"
-       do k=0,bsp_lmax
+       !Multipolar Expansion term "K"
+       do k=0,2*bsp_lmax
         !
+        roff1_kmax(:,:,k)  = 0.d0    
+        roff2_kmax(:,:,k)  = 0.d0   
+        rdiag_kmax(:,:,:,k)= 0.d0
+        !        
         !Cell Integration...
         !
         do v=1,bsp_nv
@@ -140,9 +144,9 @@
        enddo ! end loop : v
        !
        !
-       roff1_kmax(:,:,k+1)  = rkoffdiv(:,:)     
-       roff2_kmax(:,:,k+1)  = rkoffdjv(:,:)    
-       rdiag_kmax(:,:,:,k+1)= rkdiag(:,:,:)    
+       roff1_kmax(:,:,k)  = rkoffdiv(:,:)     
+       roff2_kmax(:,:,k)  = rkoffdjv(:,:)    
+       rdiag_kmax(:,:,:,k)= rkdiag(:,:,:)    
        !
        enddo ! end loop : k
 

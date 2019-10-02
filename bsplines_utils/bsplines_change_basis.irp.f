@@ -9,7 +9,7 @@ program change_basis
 !
 ! such that it is normalized to unity
  END_DOC
-
+ integer :: i,ip,j,jp
  integer :: ao_num_new
  PROVIDE ezfio_filename
  ao_num_new = ao_dim
@@ -29,7 +29,19 @@ program change_basis
  !!!!!!!!!!!!!!!!!! INTEGRALS PART !!!!!!!!!!!!!!!
  ! here you write the overlap, kinetic and e-n potential integrals on disk
  ! and you specify to read all these integrals
- call write_bsplines_one_e_integrals
+! call write_bsplines_one_e_integrals
+  print*,'HHAHAHAHAHAH'
+  
+  print*, bsp_number,bsp_dim
+  do i=1,ao_dim
+   do j=1,ao_dim
+    do ip=1,ao_dim
+     do jp=1,ao_dim
+       write(55,'(4I4,2X,ES20.12E2)')i,ip,j,jp,bsp_vee_full(i,ip,j,jp)                     
+     end do
+    end do
+   end do
+  end do
 
 end
 
@@ -100,7 +112,6 @@ subroutine write_bsplines_one_e_integrals
  provide bsp_t_full
  provide bsp_vne_full
  provide bsp_s_full
-
 
  call ezfio_set_ao_one_e_ints_ao_integrals_overlap(bsp_s_full)
  call ezfio_set_ao_one_e_ints_ao_integrals_kinetic(bsp_t_full)
