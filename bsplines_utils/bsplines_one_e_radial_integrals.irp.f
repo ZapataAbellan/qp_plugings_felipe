@@ -39,7 +39,7 @@
  do v=1,bsp_nv
     r1=bsp_grid_knot(bsp_order+v-1)
     r2=bsp_grid_knot(bsp_order+v)
-    call gauleg(r1,r2,ri,wi,bsp_glp)
+    call gauleg_2(r1,r2,ri,wi,bsp_glp)
     do rglp=1,bsp_glp
        values(:,:)=0.d0
        call interv(bsp_grid_knot,bsp_number_knot,ri(rglp),left,mflag)

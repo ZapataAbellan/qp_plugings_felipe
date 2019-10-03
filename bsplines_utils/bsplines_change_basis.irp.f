@@ -31,13 +31,41 @@ program change_basis
  ! and you specify to read all these integrals
 ! call write_bsplines_one_e_integrals
   print*,'HHAHAHAHAHAH'
-  
-  print*, bsp_number,bsp_dim
+  provide ao_bisplines_integrals_in_map  
+  double precision :: get_ao_bsplines_two_e_integral
+  double precision :: tmp
+! print*, bsp_number,bsp_dim
+! print*,''
+! print*,''
+! print*,''
+! print*,'1.358720400729E-04'
+! print*,''
+! i  = 2 
+! j  = 4
+! ip = 4
+! jp = 2
+! print*,'vee',bsp_vee_full(i,ip,j,jp)
+! print*,''
+! print*,''
+! i = 4 
+! ip = 2
+! j  = 4
+! jp = 2
+! print*,'vee',bsp_vee_full(i,ip,j,jp)
+! print*,''
+! print*,''
   do i=1,ao_dim
    do j=1,ao_dim
     do ip=1,ao_dim
      do jp=1,ao_dim
-       write(55,'(4I4,2X,ES20.12E2)')i,ip,j,jp,bsp_vee_full(i,ip,j,jp)                     
+       tmp = get_ao_bsplines_two_e_integral(i,j,ip,jp,ao_bsplines_integrals_map)    
+                          !(i,ip|j,jp) ==> <ij|ipjp>
+       if(dabs(bsp_vee_full(i,ip,j,jp)).gt.1.d-10)then
+        if(dabs(tmp - bsp_vee_full(i,ip,j,jp))/dabs(bsp_vee_full(i,ip,j,jp)).gt.1.d-5)then
+        
+          write(55,'(4I4,2X,4(ES20.12E2,X))')i,ip,j,jp,bsp_vee_full(i,ip,j,jp),tmp,dabs(tmp / bsp_vee_full(i,ip,j,jp))
+        endif
+       endif
      end do
     end do
    end do

@@ -77,11 +77,17 @@ BEGIN_PROVIDER [ logical, ao_bisplines_integrals_in_map ]
   BEGIN_DOC
   ! If True, the map of MO two-electron integrals is provided
   END_DOC
+  provide ao_bsplines_integrals_map
   ao_bisplines_integrals_in_map = .True.
-  provide 
   call add_ao_bsplines_integrals_to_map
 
 END_PROVIDER
+
+BEGIN_PROVIDER [double precision,  count_array, (ao_dim,ao_dim,ao_dim,ao_dim)]
+ implicit none
+ count_array = 0.d0
+
+END_PROVIDER 
 
 subroutine add_ao_bsplines_integrals_to_map
   use bitmasks
@@ -99,7 +105,7 @@ subroutine add_ao_bsplines_integrals_to_map
   size_buffer = min(ao_dim*ao_dim*ao_dim,16000000)
 
   n_integrals = 0
-  allocate(buffer_i(size_buffer),buffer_value(size_buffer))
+  allocate(buffer_i(size_buffer),buffer_value(size_buffer),key_ao_1(N_int),key_ao_2(N_int),key(N_int))
 
   !atomic orbital angular momenta
   integer:: lp,lq,lt,lu
@@ -119,6 +125,7 @@ subroutine add_ao_bsplines_integrals_to_map
   integer::i,j,ip,jp,ii,jj,iv,jv
   !
   double precision::gaunt
+  integer(bit_kind), allocatable :: key_ao_1(:),key_ao_2(:),key(:)
 
   !
 do lp=0,bsp_lmax
@@ -180,14 +187,65 @@ do lp=0,bsp_lmax
                 if (((ip+iv-1).gt.1).and.((ip+iv-1).lt.bsp_number)) then
                 if (((jp+jv-1).gt.1).and.((jp+jv-1).lt.bsp_number)) then
  
-                ao_p = ao_to_bspline(mp,lp,(i +iv-1)-1)
-                ao_q = ao_to_bspline(mq,lq,(ip+iv-1)-1)
-                ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1)
-                ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1)
-                ! <pq|tu> 
+                
+
+                ! (pq|tu) 
+                ! <pt|qu>
+                ao_p = ao_to_bspline(mp,lp,(i +iv-1)-1) ! 1
+                ao_q = ao_to_bspline(mq,lq,(ip+iv-1)-1) ! 1
+                ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1) ! 2
+                ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1) ! 2
+
+                key_ao_1 = 0_bit_kind
+                key_ao_2 = 0_bit_kind
+                key      = 0_bit_kind
+                call set_bit_to_integer(ao_p,key_ao_1,N_int)
+                call set_bit_to_integer(ao_q,key_ao_1,N_int)
+                call set_bit_to_integer(ao_t,key_ao_2,N_int)
+                call set_bit_to_integer(ao_u,key_ao_2,N_int)
+
+                call set_bit_to_integer(ao_p,key,N_int)
+                call set_bit_to_integer(ao_t,key,N_int)
+                call set_bit_to_integer(ao_q,key,N_int)
+                call set_bit_to_integer(ao_u,key,N_int)
+
+                integer ::icount_1,icount_2,icount
+                integer ::ik
+                double precision :: factor
+                icount = 0
+                icount_1 = 0
+                icount_2 = 0
+                do ik = 1, N_int
+                 icount_1 += popcnt(key_ao_1(ik))
+                 icount_2 += popcnt(key_ao_2(ik))
+                 icount += popcnt(key(ik))
+                enddo
+                
+                factor = 1.d0
+                if(icount_1 == 1 .and. icount_2 == 1 .and. icount == 2)then
+                 factor = 0.5d0
+                else if (icount_1 == 2 .and. icount_2 == 2 .and. icount == 3)then
+                 factor = 1.d0/8.d0 
+                else if (icount_1 == 1 .and. icount_2 == 2 .and. icount == 2)then
+                 factor = 0.25d0
+                else if (icount_1 == 2 .and. icount_2 == 1 .and. icount == 2)then
+                 factor = 0.25d0
+                else if (icount_1 == 2 .and. icount_2 == 2 .and. icount == 2)then
+                 factor = 0.25d0
+                else if (icount_1 == 1 .and. icount_2 == 2 .and. icount == 3)then
+                 factor = 0.25d0
+                else if (icount_1 == 2 .and. icount_2 == 1 .and. icount == 3)then
+                 factor = 0.25d0
+                else if (icount == 4)then
+                 factor = 1.d0/8.d0
+                endif
+
+                ! (pq|tu) 
+
                 n_integrals += 1
-                buffer_value(n_integrals) = c * angular
-                call ao_two_e_integrals_index(ao_p,ao_q,ao_t,ao_u,buffer_i(n_integrals))
+!               buffer_value(n_integrals) = c * angular * factor 
+                buffer_value(n_integrals) = c * factor 
+                call two_e_integrals_index(ao_p,ao_t,ao_q,ao_u,buffer_i(n_integrals))
                 if (n_integrals == size_buffer) then
                   call insert_into_ao_bsplines_integrals_map(n_integrals,buffer_i,buffer_value,&
                       real(ao_integrals_threshold,integral_kind))
@@ -232,6 +290,5 @@ do lp=0,bsp_lmax
   ao_bsplines_map_size = get_ao_bsplines_map_size()
   print*,'ao_bsplines_map_size = ',ao_bsplines_map_size
 
-  deallocate(list_ijkl)
 
 end

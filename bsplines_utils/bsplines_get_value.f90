@@ -1,5 +1,5 @@
 
-       SUBROUTINE gauleg(x1,x2,x,w,n)
+       SUBROUTINE gauleg_2(x1,x2,x,w,n)
        IMPLICIT NONE
        INTEGER n
        REAL(8):: x1,x2,x(n),w(n)
@@ -31,7 +31,7 @@
              w(n+1-i)=w(i)
 12           continue
              return
-       END SUBROUTINE gauleg
+       END SUBROUTINE gauleg_2
 
 
          SUBROUTINE INTERV(XT,LXT,X,LEFT,MFLAG)

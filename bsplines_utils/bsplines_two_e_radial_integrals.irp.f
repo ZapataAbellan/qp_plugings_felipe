@@ -81,7 +81,7 @@
           rvleft=bsp_grid_knot(bsp_order+v-1)
           rvright=bsp_grid_knot(bsp_order+v)
           !
-          call gauleg(rvleft,rvright,ri,wi,bsp_glp)
+          call gauleg_2(rvleft,rvright,ri,wi,bsp_glp)
           do rglpiv=1,bsp_glp
              valuesiv(:,:)=0.d0
              call interv(bsp_grid_knot,bsp_number_knot,ri(rglpiv),left,mflag)
@@ -104,7 +104,7 @@
              end do
              !
              !Over-diagonal cells integrals...
-             call gauleg(rvleft,ri(rglpiv),rii,wii,bsp_glp)
+             call gauleg_2(rvleft,ri(rglpiv),rii,wii,bsp_glp)
              do rglpjv=1,bsp_glp
                 valuesjv(:,:)=0.d0
                 call interv(bsp_grid_knot,bsp_number_knot,rii(rglpjv),left,mflag)
