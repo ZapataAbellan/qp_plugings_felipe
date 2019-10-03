@@ -46,7 +46,7 @@
            !limits in the multipolar expansion...
            kmin = max(abs(lp-lt),abs(lq-lu))
            kmax = min(abs(lp+lt),abs(lq+lu))
-      
+           
            !k-sum...
            do k=kmin,kmax
             
@@ -56,20 +56,25 @@
                                                                   
             if ((mod(ptk,2).eq.0).and.(mod(quk,2).eq.0)) then
 
-             angular = 1.d0
-
-             !print*,'lp,lq,lt,lu',lp,lq,lt,lu
-             !print*,'k,kmin,kmax',k,kmin,kmax
-
+             !mk sum...
              do mk=-k,k
 
               !delta functions...
               if ((mk.eq.(mp-mt)).and.(mk.eq.(mq-mu))) then
-                
+
+!              print*,'lp,mp',lp,mp
+!              print*,'lq,mq',lq,mq
+!              print*,'lt,mt',lt,mt
+!              print*,'lu,mu',lu,mu
+!              print*,'k,mk',k,mk
+!              print*,'(k,lp,mp,lt,mt)',k,lp,mp,lt,mt,gaunt(k,lp,mp,lt,mt)
+!              print*,'(k,lq,mq,lu,mu)',k,lq,mq,lu,mu,gaunt(k,lq,mq,lu,mu)
+              
                angular = (-1.d0)**mk * gaunt(k,lp,mp,lt,mt) * gaunt(k,lq,mq,lu,mu) 
+             
+!               print*,'angular',angular
 
-               !R^k
-
+               !R^k(ao_p,ao_q,ao_t,ao_u)
                do jv=1,bsp_nv
                 jj=0
                 do j=1,bsp_order
@@ -119,14 +124,17 @@
             end if !triangular relations
            end do !loop: k
          
-         end do
-        end do
-       end do
-      end do
-     end do
-    end do
-   end do
-  end do
+         end do !loop:mu
+        end do !loop:lu
+        !
+       end do !loop:mt
+      end do !loop:lt
+      !
+     end do !loop:mq
+    end do !loop:lq
+    !
+   end do !loop:mp
+  end do !loop:lp
 
 
   END_PROVIDER 

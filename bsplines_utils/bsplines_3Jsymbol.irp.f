@@ -1,4 +1,5 @@
-       function gaunt(k,l,m,lp,mp)
+
+ double precision function gaunt(k,l,m,lp,mp)
        implicit none
        integer::k
        integer::l,m
@@ -8,17 +9,21 @@
        double precision::coef_1
        double precision::coef_2
 
-       double precision::gaunt 
-
-
-       !Three J product...
-       call ThreeJBGN(dfloat(l),0.d0,dfloat(k),0.d0,&
-        &dfloat(lp),0.d0,three0)
        
+
+
        !Three J product...
-       call ThreeJBGN(dfloat(l),-dfloat(m),&
-            &dfloat(k),dfloat(m)-dfloat(mp),&
-            &dfloat(lp),dfloat(mp),threeJ)
+!       call ThreeJBGN(dfloat(l),0.d0,dfloat(k),0.d0,&
+!        &dfloat(lp),0.d0,three0)
+       
+       three0 = bsp_3j_symbol(l,0,k,0,lp,0)
+
+       !Three J product...
+!       call ThreeJBGN(dfloat(l),-dfloat(m),&
+!            &dfloat(k),dfloat(m)-dfloat(mp),&
+!            &dfloat(lp),dfloat(mp),threeJ)
+
+       threeJ = bsp_3j_symbol(l,-m,k,m-mp,lp,mp)
 
        !Coefficients... 
        coef   = (-1.d0)**(-m)
@@ -29,8 +34,40 @@
        gaunt = coef*coef_1*coef_2*three0*threeJ
 
        return
-       end function gaunt
+  end function gaunt
     
+   
+
+ BEGIN_PROVIDER [double precision,  bsp_3j_symbol , (0:bsp_lmax,-bsp_lmax:bsp_lmax,0:2*bsp_lmax,-2*bsp_lmax:2*bsp_lmax,0:bsp_lmax,-bsp_lmax:bsp_lmax)]
+
+ implicit none
+ 
+ double precision :: three3J
+ integer:: lp,mp,lq,mq,k,mk
+
+ three3J = 0.d0
+
+ do lp=0,bsp_lmax
+  do mp=-lp,lp
+   !
+   do lq=0,bsp_lmax
+    do mq=-lq,lp
+     !
+     do k=0,2*bsp_lmax
+      do mk=-k,k
+      
+       call ThreeJBGN(dfloat(lp),dfloat(mp),dfloat(k),dfloat(mk),dfloat(lq),dfloat(mq),three3J)
+
+       bsp_3j_symbol(lp,mp,k,mk,lq,mq) = three3J
+
+      end do 
+     end do
+    end do
+   end do
+  end do
+ enddo 
+
+ END_PROVIDER
 
 
        subroutine ThreeJBGN(AJ,am,BJ,bm,J,m,threeJ)
@@ -149,4 +186,4 @@
        end subroutine factorial
 
 
-   
+

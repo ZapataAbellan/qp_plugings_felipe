@@ -11,7 +11,7 @@ qp set_file ${ezfio}
 qp set bsplines_utils bsp_box_size 20. 
 qp set bsplines_utils bsp_number 9
 qp set bsplines_utils bsp_order 4
-qp set bsplines_utils bsp_lmax 1 
+qp set bsplines_utils bsp_lmax 2 
 qp set bsplines_utils bsp_glp 4
 
 qp run bsplines_change_basis | tee ${ezfio}.change.out 
