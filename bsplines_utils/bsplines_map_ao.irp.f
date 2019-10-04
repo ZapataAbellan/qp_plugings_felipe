@@ -116,7 +116,7 @@ subroutine add_ao_bsplines_integrals_to_map
   !atomic orbital index
   integer:: ao_p,ao_q,ao_t,ao_u
   !triangle relations
-  integer:: ptk,quk
+  integer:: pqk,tuk
   !angular coefficient
   double precision:: angular
   !slater radial integral
@@ -141,27 +141,27 @@ do lp=0,bsp_lmax
      do mu=-lu,lu
      !
      !limits in the multipolar expansion...
-     kmin = max(abs(lp-lt),abs(lq-lu))
-     kmax = min(abs(lp+lt),abs(lq+lu))
+     kmin = max(abs(lp-lq),abs(lt-lu))
+     kmax = min(abs(lp+lq),abs(lt+lu))
      
      !k-sum...
       do k=kmin,kmax
        
        !triangular relations between ao... 
-       ptk = lp + lt + k                      
-       quk = lq + lu + k
+       pqk = lp + lq + k                      
+       tuk = lt + lu + k
                                                              
-       if ((mod(ptk,2).eq.0).and.(mod(quk,2).eq.0)) then
+       if ((mod(pqk,2).eq.0).and.(mod(tuk,2).eq.0)) then
 
         !mk sum...
         do mk=-k,k
 
          !delta functions...
-         if ((mk.eq.(mp-mt)).and.(mk.eq.(mq-mu))) then
+         if ((mk.eq.(mp-mq)).and.(mk.eq.(mt-mu))) then
          
-          angular = (-1.d0)**mk * gaunt(k,lp,mp,lt,mt) * gaunt(k,lq,mq,lu,mu) 
+          angular = (-1.d0)**mk * gaunt(k,lp,mp,lq,mq) * gaunt(k,lt,mt,lu,mu) 
 
-          !R^k(ao_p,ao_q,ao_t,ao_u)
+          !R^k(ao_p,ao_q,ao_t,ao_u)chemist notation
           do jv=1,bsp_nv
            jj=0
            do j=1,bsp_order
@@ -243,8 +243,8 @@ do lp=0,bsp_lmax
                 ! (pq|tu) 
 
                 n_integrals += 1
-!               buffer_value(n_integrals) = c * angular * factor 
-                buffer_value(n_integrals) = c * factor 
+                buffer_value(n_integrals) = c * angular * factor 
+!                buffer_value(n_integrals) = c * factor 
                 call two_e_integrals_index(ao_p,ao_t,ao_q,ao_u,buffer_i(n_integrals))
                 if (n_integrals == size_buffer) then
                   call insert_into_ao_bsplines_integrals_map(n_integrals,buffer_i,buffer_value,&

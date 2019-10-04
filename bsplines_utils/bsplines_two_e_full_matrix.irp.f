@@ -16,7 +16,7 @@
        !atomic orbital index
        integer:: ao_p,ao_q,ao_t,ao_u
        !triangle relations
-       integer:: ptk,quk
+       integer:: pqk,tuk
        !angular coefficient
        double precision:: angular
        !slater radial integral
@@ -44,23 +44,23 @@
            do mu=-lu,lu
            !
            !limits in the multipolar expansion...
-           kmin = max(abs(lp-lt),abs(lq-lu))
-           kmax = min(abs(lp+lt),abs(lq+lu))
+           kmin = max(abs(lp-lq),abs(lt-lu))
+           kmax = min(abs(lp+lq),abs(lt+lu))
            
            !k-sum...
            do k=kmin,kmax
             
             !triangular relations between ao... 
-            ptk = lp + lt + k                      
-            quk = lq + lu + k
+            pqk = lp + lq + k                      
+            tuk = lt + lu + k
                                                                   
-            if ((mod(ptk,2).eq.0).and.(mod(quk,2).eq.0)) then
+            if ((mod(pqk,2).eq.0).and.(mod(tuk,2).eq.0)) then
 
              !mk sum...
              do mk=-k,k
 
               !delta functions...
-              if ((mk.eq.(mp-mt)).and.(mk.eq.(mq-mu))) then
+              if ((mk.eq.(mp-mq)).and.(mk.eq.(mt-mu))) then
 
 !              print*,'lp,mp',lp,mp
 !              print*,'lq,mq',lq,mq
@@ -70,11 +70,11 @@
 !              print*,'(k,lp,mp,lt,mt)',k,lp,mp,lt,mt,gaunt(k,lp,mp,lt,mt)
 !              print*,'(k,lq,mq,lu,mu)',k,lq,mq,lu,mu,gaunt(k,lq,mq,lu,mu)
               
-               angular = (-1.d0)**mk * gaunt(k,lp,mp,lt,mt) * gaunt(k,lq,mq,lu,mu) 
+               angular = (-1.d0)**mk * gaunt(k,lp,mp,lq,mq) * gaunt(k,lt,mt,lu,mu) 
              
 !               print*,'angular',angular
 
-               !R^k(ao_p,ao_q,ao_t,ao_u)
+               !R^k(ao_p,ao_q,ao_t,ao_u)chemist notation
                do jv=1,bsp_nv
                 jj=0
                 do j=1,bsp_order
@@ -100,10 +100,10 @@
                      if (((ip+iv-1).gt.1).and.((ip+iv-1).lt.bsp_number)) then
                      if (((jp+jv-1).gt.1).and.((jp+jv-1).lt.bsp_number)) then
  
-                     ao_p = ao_to_bspline(mp,lp,(i +iv-1)-1)
-                     ao_q = ao_to_bspline(mq,lq,(ip+iv-1)-1)
-                     ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1)
-                     ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1)
+                     ao_p = ao_to_bspline(mp,lp,(i +iv-1)-1) !1
+                     ao_q = ao_to_bspline(mq,lq,(ip+iv-1)-1) !1
+                     ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1) !2
+                     ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1) !2
                       
                      bsp_vee_full(ao_p,ao_q,ao_t,ao_u) += c * angular
                      
