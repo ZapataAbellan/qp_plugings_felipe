@@ -1,7 +1,10 @@
 
- double precision function gaunt(k,l,m,lp,mp)
+       double precision function gaunt(l,m,k,mk,lp,mp)
+       
+       !gaunt = < l m | C_mk^k | l' m' > 
+
        implicit none
-       integer::k
+       integer::k,mk
        integer::l,m
        integer::lp,mp
        double precision::three0,threeJ
@@ -9,28 +12,18 @@
        double precision::coef_1
        double precision::coef_2
 
-       
-
-
-       !Three J product...
-!       call ThreeJBGN(dfloat(l),0.d0,dfloat(k),0.d0,&
-!        &dfloat(lp),0.d0,three0)
-       
+       !3j-symbols...
        three0 = bsp_3j_symbol(l,0,k,0,lp,0)
-
-       !Three J product...
-!       call ThreeJBGN(dfloat(l),-dfloat(m),&
-!            &dfloat(k),dfloat(m)-dfloat(mp),&
-!            &dfloat(lp),dfloat(mp),threeJ)
-
-       threeJ = bsp_3j_symbol(l,-m,k,m-mp,lp,mp)
+       threeJ = bsp_3j_symbol(l,-m,k,mk,lp,mp)
 
        !Coefficients... 
-       coef   = (-1.d0)**(-m)
+       coef   = (-1.d0)**m
        coef_1 = dsqrt(dfloat(2*l+1))
        coef_2 = dsqrt(dfloat(2*lp+1))
 
-       !Gaunt coefficient... 
+       !Gaunt coefficient...                                  
+       !< l m | C_mk^k | l' m' > = (-1)^m [(2l+1)(2lp+1)]^1/2 ||(l;k;lp)(-m;mk;mp)|| ||(l;k;lp)(0;0;0)||
+
        gaunt = coef*coef_1*coef_2*three0*threeJ
 
        return
@@ -65,7 +58,7 @@
     end do
    end do
   end do
- enddo 
+ end do 
 
  END_PROVIDER
 

@@ -105,180 +105,185 @@ subroutine add_ao_bsplines_integrals_to_map
   size_buffer = min(ao_dim*ao_dim*ao_dim,16000000)
 
   n_integrals = 0
+
   allocate(buffer_i(size_buffer),buffer_value(size_buffer),key_ao_1(N_int),key_ao_2(N_int),key(N_int))
 
-  !atomic orbital angular momenta
+  integer(bit_kind), allocatable :: key_ao_1(:),key_ao_2(:),key(:)
+
+  !atomic orbitals (ao)
+  integer:: ao_p,ao_q,ao_t,ao_u 
+  !ao angular momentum
   integer:: lp,lq,lt,lu
+  !ao magnetic momentum
   integer:: mp,mq,mt,mu
+
   !multipolar expansion 
-  integer:: k,kmax,kmin
-  integer:: mk
-  !atomic orbital index
-  integer:: ao_p,ao_q,ao_t,ao_u
-  !triangle relations
-  integer:: pqk,tuk
-  !angular coefficient
+  integer:: k,kmax,kmin,mk
+  
+  !Gaunt coefficient  <lm|C_mk^k|lpmp>
+  double precision:: gaunt
   double precision:: angular
-  !slater radial integral
+
+  !Slater radial integral coefficient R^k(p,q,t,u)
   double precision:: c
+
   !integres for loops in the assembling algorithm...
   integer::i,j,ip,jp,ii,jj,iv,jv
   !
-  double precision::gaunt
-  integer(bit_kind), allocatable :: key_ao_1(:),key_ao_2(:),key(:)
-
+  !Two-electron matrix elements in chemist notation...
+  !electron    1 1 2 2           
+  bsp_vee_full(:,:,:,:) = 0.d0
   !
-do lp=0,bsp_lmax
- do mp=-lp,lp
- !
- do lq=0,bsp_lmax
-  do mq=-lq,lq
   !
-  do lt=0,bsp_lmax
-   do mt=-lt,lt
-    !
-    do lu=0,bsp_lmax
-     do mu=-lu,lu
-     !
-     !limits in the multipolar expansion...
-     kmin = max(abs(lp-lq),abs(lt-lu))
-     kmax = min(abs(lp+lq),abs(lt+lu))
-     
-     !k-sum...
-      do k=kmin,kmax
-       
-       !triangular relations between ao... 
-       pqk = lp + lq + k                      
-       tuk = lt + lu + k
-                                                             
-       if ((mod(pqk,2).eq.0).and.(mod(tuk,2).eq.0)) then
+  !Attention: 
+  !R^k is stored in the chemist notation!
+  !
+  !Multipolar expansion limits...
+  kmin = max(abs(lp-lq),abs(lt-lu))
+  kmax = min(abs(lp+lq),abs(lt+lu))
+  ! 
+  !Loop multipolar expansion...
+  do k=kmin,kmax
+   !
+   !Loop over the radial grid...
+   do jv=1,bsp_nv
+    jj=0
+    do j=1,bsp_order
+     do jp=1,bsp_order
+      jj = jj + 1
+      do iv=1,bsp_nv
+       ii=0
+       do i=1,bsp_order
+        do ip=1,bsp_order
+         ii = ii + 1
 
-        !mk sum...
-        do mk=-k,k
+         if( iv < jv ) then
+          c = roff1_kmax(ii,iv,k)*roff2_kmax(jj,jv,k) 
+         else if( iv > jv ) then
+          c = roff2_kmax(ii,iv,k)*roff1_kmax(jj,jv,k)
+         else
+          c = rdiag_kmax(ii,jj,iv,k)
+         end if
 
-         !delta functions...
-         if ((mk.eq.(mp-mq)).and.(mk.eq.(mt-mu))) then
-         
-          angular = (-1.d0)**mk * gaunt(k,lp,mp,lq,mq) * gaunt(k,lt,mt,lu,mu) 
+         !we remove from the basis the first and the last b-spline...
+         if (((i +iv-1).gt.1).and.((i +iv-1).lt.bsp_number)) then 
+         if (((j +jv-1).gt.1).and.((j +jv-1).lt.bsp_number)) then
+         if (((ip+iv-1).gt.1).and.((ip+iv-1).lt.bsp_number)) then
+         if (((jp+jv-1).gt.1).and.((jp+jv-1).lt.bsp_number)) then
 
-          !R^k(ao_p,ao_q,ao_t,ao_u)chemist notation
-          do jv=1,bsp_nv
-           jj=0
-           do j=1,bsp_order
-            do jp=1,bsp_order
-             jj = jj + 1
-             do iv=1,bsp_nv
-              ii=0
-              do i=1,bsp_order
-               do ip=1,bsp_order
-                ii = ii + 1
+         !Loop over the angular space...
+         !e(1)
+         do lp=0,bsp_lmax
+          do mp=-lp,lp
+           !e(1)
+           do lq=0,bsp_lmax
+            do mq=-lq,lq
+             !e(2)
+             do lt=0,bsp_lmax
+              do mt=-lt,lt
+               !e(2)
+               do lu=0,bsp_lmax
+                do mu=-lu,lu
+                 !
+                 !atomic orbitals index...
+                 ao_p = ao_to_bspline(mp,lp,(i +iv-1)-1) !e(1)
+                 ao_q = ao_to_bspline(mq,lq,(ip+iv-1)-1) !e(1)
+                 ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1) !e(2)
+                 ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1) !e(2)
+                 !
+                 !
+                 angular = 0.d0
+                 do mk=-k,k
+                  angular +=  gaunt(lp,mp,k,mk,lq,mq) * gaunt(lt,mt,k,mk,lu,mu) 
+                  !print*,'angular',angular
+                 end do
+                                
+                 bsp_vee_full(ao_p,ao_q,ao_t,ao_u) += c * angular
 
-                if( iv < jv ) then
-                 c = roff1_kmax(ii,iv,k)*roff2_kmax(jj,jv,k) 
-                else if( iv > jv ) then
-                 c = roff2_kmax(ii,iv,k)*roff1_kmax(jj,jv,k)
-                else
-                 c = rdiag_kmax(ii,jj,iv,k)
-                end if
- 
-                !we don't take the first and the last b-spline...
-                if (((i +iv-1).gt.1).and.((i +iv-1).lt.bsp_number)) then 
-                if (((j +jv-1).gt.1).and.((j +jv-1).lt.bsp_number)) then
-                if (((ip+iv-1).gt.1).and.((ip+iv-1).lt.bsp_number)) then
-                if (((jp+jv-1).gt.1).and.((jp+jv-1).lt.bsp_number)) then
- 
-                
 
-                ! (pq|tu) 
-                ! <pt|qu>
-                ao_p = ao_to_bspline(mp,lp,(i +iv-1)-1) ! 1
-                ao_q = ao_to_bspline(mq,lq,(ip+iv-1)-1) ! 1
-                ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1) ! 2
-                ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1) ! 2
+                 key_ao_1 = 0_bit_kind
+                 key_ao_2 = 0_bit_kind
+                 key      = 0_bit_kind
 
-                key_ao_1 = 0_bit_kind
-                key_ao_2 = 0_bit_kind
-                key      = 0_bit_kind
-                call set_bit_to_integer(ao_p,key_ao_1,N_int)
-                call set_bit_to_integer(ao_q,key_ao_1,N_int)
-                call set_bit_to_integer(ao_t,key_ao_2,N_int)
-                call set_bit_to_integer(ao_u,key_ao_2,N_int)
+                 call set_bit_to_integer(ao_p,key_ao_1,N_int)
+                 call set_bit_to_integer(ao_q,key_ao_1,N_int)
+                 call set_bit_to_integer(ao_t,key_ao_2,N_int)
+                 call set_bit_to_integer(ao_u,key_ao_2,N_int)
 
-                call set_bit_to_integer(ao_p,key,N_int)
-                call set_bit_to_integer(ao_t,key,N_int)
-                call set_bit_to_integer(ao_q,key,N_int)
-                call set_bit_to_integer(ao_u,key,N_int)
+                 call set_bit_to_integer(ao_p,key,N_int)
+                 call set_bit_to_integer(ao_t,key,N_int)
+                 call set_bit_to_integer(ao_q,key,N_int)
+                 call set_bit_to_integer(ao_u,key,N_int)
 
-                integer ::icount_1,icount_2,icount
-                integer ::ik
-                double precision :: factor
-                icount = 0
-                icount_1 = 0
-                icount_2 = 0
-                do ik = 1, N_int
-                 icount_1 += popcnt(key_ao_1(ik))
-                 icount_2 += popcnt(key_ao_2(ik))
-                 icount += popcnt(key(ik))
-                enddo
-                
-                factor = 1.d0
-                if(icount_1 == 1 .and. icount_2 == 1 .and. icount == 2)then
-                 factor = 0.5d0
-                else if (icount_1 == 2 .and. icount_2 == 2 .and. icount == 3)then
-                 factor = 1.d0/8.d0 
-                else if (icount_1 == 1 .and. icount_2 == 2 .and. icount == 2)then
-                 factor = 0.25d0
-                else if (icount_1 == 2 .and. icount_2 == 1 .and. icount == 2)then
-                 factor = 0.25d0
-                else if (icount_1 == 2 .and. icount_2 == 2 .and. icount == 2)then
-                 factor = 0.25d0
-                else if (icount_1 == 1 .and. icount_2 == 2 .and. icount == 3)then
-                 factor = 0.25d0
-                else if (icount_1 == 2 .and. icount_2 == 1 .and. icount == 3)then
-                 factor = 0.25d0
-                else if (icount == 4)then
-                 factor = 1.d0/8.d0
-                endif
+                 integer ::icount_1,icount_2,icount
+                 integer ::ik
+                 double precision :: factor
+                 icount = 0
+                 icount_1 = 0
+                 icount_2 = 0
+                 do ik = 1, N_int
+                  icount_1 += popcnt(key_ao_1(ik))
+                  icount_2 += popcnt(key_ao_2(ik))
+                  icount += popcnt(key(ik))
+                 enddo
+                 
+                 factor = 1.d0
+                 if(icount_1 == 1 .and. icount_2 == 1 .and. icount == 2)then
+                  factor = 0.5d0
+                 else if (icount_1 == 2 .and. icount_2 == 2 .and. icount == 3)then
+                  factor = 1.d0/8.d0 
+                 else if (icount_1 == 1 .and. icount_2 == 2 .and. icount == 2)then
+                  factor = 0.25d0
+                 else if (icount_1 == 2 .and. icount_2 == 1 .and. icount == 2)then
+                  factor = 0.25d0
+                 else if (icount_1 == 2 .and. icount_2 == 2 .and. icount == 2)then
+                  factor = 0.25d0
+                 else if (icount_1 == 1 .and. icount_2 == 2 .and. icount == 3)then
+                  factor = 0.25d0
+                 else if (icount_1 == 2 .and. icount_2 == 1 .and. icount == 3)then
+                  factor = 0.25d0
+                 else if (icount == 4)then
+                  factor = 1.d0/8.d0
+                 endif
 
-                ! (pq|tu) 
+                 !Two-electron integrals in the chemist notation (pq|tu) 
 
-                n_integrals += 1
-                buffer_value(n_integrals) = c * angular * factor 
-!                buffer_value(n_integrals) = c * factor 
-                call two_e_integrals_index(ao_p,ao_t,ao_q,ao_u,buffer_i(n_integrals))
-                if (n_integrals == size_buffer) then
+                 n_integrals += 1
+
+                 buffer_value(n_integrals) = c * angular * factor
+
+                 call two_e_integrals_index(ao_p,ao_t,ao_q,ao_u,buffer_i(n_integrals))
+                 if (n_integrals == size_buffer) then
                   call insert_into_ao_bsplines_integrals_map(n_integrals,buffer_i,buffer_value,&
                       real(ao_integrals_threshold,integral_kind))
                   n_integrals = 0
-                endif
-                end if
-                end if 
-                end if 
-                end if
+                 endif
 
-               end do
-              end do
-             end do !loop : radial intervals r2
-            end do 
-           end do
-          end do !loop : radial intervals r1
+                end do !loop:mu
+               end do !loop:lu
+               !
+              end do !loop:mt
+             end do !loop:lt
+             !
+            end do !loop:mq
+           end do !loop:lq
+           !
+          end do !loop:mp
+         end do !loop:lp
 
-         end if !delta functions
-        end do !loop: mk
-       end if !triangular relations
-      end do !loop: k
+         end if
+         end if 
+         end if 
+         end if
 
-     end do !loop:mu
-    end do !loop:lu
-        !
-   end do !loop:mt
-  end do !loop:lt
-      !
- end do !loop:mq
- end do !loop:lq
-    !
- end do !loop:mp
- end do !loop:lp
+        end do
+       end do
+      end do !loop : radial intervals r2
+     end do 
+    end do
+   end do !loop : radial intervals r1
+   !
+  end do !loop: k
 
 
   call insert_into_ao_bsplines_integrals_map(n_integrals,buffer_i,buffer_value,&

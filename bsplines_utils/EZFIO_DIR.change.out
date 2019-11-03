@@ -1,0 +1,118 @@
+Date: 03/11/2019 01:03:28
+===============
+Quantum Package
+===============
+
+Git Commit: * 2 papers
+Git Date  : Tue Sep 10 16:49:08 2019 +0200
+Git SHA1  : 2d61610022c7d3e426ef0b0baaf1edfde8ce74b6
+EZFIO Dir : EZFIO_DIR
+
+
+Task server running : tcp://127.0.1.1:41279
+.. >>>>> [ IO READ: bsp_lmax ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.002022 GB ] [ VIRT MEM :       0.041355 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.000278  s ] [ CPU  TIME:       0.003626  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_number ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.002022 GB ] [ VIRT MEM :       0.041355 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.000485  s ] [ CPU  TIME:       0.003773  s ] <<<<< ..
+
+ AO map initialized :               2033136
+.. >>>>> [ IO READ: bsp_order ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.002258 GB ] [ VIRT MEM :       0.096069 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.008203  s ] [ CPU  TIME:       0.046063  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_integrals_threshold ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.002258 GB ] [ VIRT MEM :       0.096069 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.010533  s ] [ CPU  TIME:       0.057628  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_glp ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.002258 GB ] [ VIRT MEM :       0.096069 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.010713  s ] [ CPU  TIME:       0.057928  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_box_size ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.002258 GB ] [ VIRT MEM :       0.096069 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.010873  s ] [ CPU  TIME:       0.058188  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_num ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.119938 GB ] [ VIRT MEM :       0.213440 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.269320  s ] [ CPU  TIME:       0.319275  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_cartesian ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.119938 GB ] [ VIRT MEM :       0.213440 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.269496  s ] [ CPU  TIME:       0.319275  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_power ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120148 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.272220  s ] [ CPU  TIME:       0.334754  s ] <<<<< ..
+
+.. >>>>> [ IO READ: io_ao_integrals_overlap ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120148 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.272538  s ] [ CPU  TIME:       0.335467  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_prim_num ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120274 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.276101  s ] [ CPU  TIME:       0.350398  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_expo ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120281 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.276469  s ] [ CPU  TIME:       0.353141  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_coef ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120296 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.276811  s ] [ CPU  TIME:       0.355671  s ] <<<<< ..
+
+.. >>>>> [ IO READ: ao_nucl ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120468 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.277429  s ] [ CPU  TIME:       0.360397  s ] <<<<< ..
+
+.. >>>>> [ IO READ: nucl_num ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120468 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.277704  s ] [ CPU  TIME:       0.362396  s ] <<<<< ..
+
+.. >>>>> [ IO READ: nucl_label ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120506 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.278036  s ] [ CPU  TIME:       0.364846  s ] <<<<< ..
+
+.. >>>>> [ IO READ: nucl_charge ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.120518 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.278366  s ] [ CPU  TIME:       0.367281  s ] <<<<< ..
+
+
+.. >>>>> [ RES  MEM :       0.120533 GB ] [ VIRT MEM :       0.651043 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.278680  s ] [ CPU  TIME:       0.369617  s ] <<<<< ..
+
+
+Nuclear Coordinates (Angstroms)
+===============================
+
+================ ============ ============ ============ ============
+      Atom          Charge          X            Y            Z 
+================ ============ ============ ============ ============
+He                   2.000000     0.000000     0.000000     0.000000
+================ ============ ============ ============ ============
+
+* mo_num                                                         5
+* N_int                                                          1
+ ao_bsplines_map_size =                 47924
+ HHAHAHAHAHAH
+Wall time: 0:00:35
+
