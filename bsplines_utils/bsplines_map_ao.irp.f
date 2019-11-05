@@ -79,7 +79,8 @@ BEGIN_PROVIDER [ logical, ao_bisplines_integrals_in_map ]
   END_DOC
   provide ao_bsplines_integrals_map
   ao_bisplines_integrals_in_map = .True.
-  call add_ao_bsplines_integrals_to_map
+! call add_ao_bsplines_integrals_to_map
+  call fill_all_integrals_into_ao_map
 
 END_PROVIDER
 

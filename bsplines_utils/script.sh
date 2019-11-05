@@ -1,4 +1,4 @@
-source ~/qp2/quantum_package.rc  
+source ~/programs/qp2/quantum_package.rc  
 
 file=$1
 m=$2
@@ -9,10 +9,10 @@ rm -rf $ezfio
 qp create_ezfio -b cc-pvdz $file -m $2 -o $ezfio 
 qp set_file ${ezfio}
 qp set bsplines_utils bsp_box_size 20. 
-qp set bsplines_utils bsp_number 8
-qp set bsplines_utils bsp_order 4
+qp set bsplines_utils bsp_number 4
+qp set bsplines_utils bsp_order 2
 qp set bsplines_utils bsp_lmax 2
-qp set bsplines_utils bsp_glp 4
+qp set bsplines_utils bsp_glp 2
 
 qp run bsplines_change_basis | tee ${ezfio}.change.out 
 #qp run bsplines_check        | tee ${ezfio}.check.out 
