@@ -1,4 +1,5 @@
-source ~/qp2/quantum_package.rc  
+source /home/oem/Documentos/UPMC/LCT/LCT_FELIPE/PROJECTS/quantum_package/qp2/quantum_package.rc  
+
 
 file=$1
 m=$2
@@ -11,8 +12,9 @@ qp set_file ${ezfio}
 qp set bsplines_utils bsp_box_size 20. 
 qp set bsplines_utils bsp_number 8
 qp set bsplines_utils bsp_order 4
-qp set bsplines_utils bsp_lmax 2
+qp set bsplines_utils bsp_lmax 4 
 qp set bsplines_utils bsp_glp 4
 
-qp run bsplines_change_basis | tee ${ezfio}.change.out 
+qp run bsplines_two_e_give_integrals  | tee ${ezfio}.change.out
+#qp run bsplines_change_basis | tee ${ezfio}.change.out 
 #qp run bsplines_check        | tee ${ezfio}.check.out 
