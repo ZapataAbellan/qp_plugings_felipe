@@ -16,14 +16,14 @@ subroutine compute_ao_integrals_bsplines_jl(j,l,n_integrals,buffer_i,buffer_valu
   double precision               :: integral, wall_0
   double precision               :: thr
   integer                        :: kk, m, j1, i1
-  double precision, allocatable  ;; jl_integrals(:,:)
+  double precision, allocatable  :: jl_integrals(:,:)
   allocate(jl_integrals(ao_dim,ao_dim))
 
   thr = ao_integrals_threshold
 
   n_integrals = 0
   
-  call give_all_bsplines_kl(j,l,jl_integrals)
+  call give_all_bsplines_jl(j,l,jl_integrals)
   j1 = j+ishft(l*l-l,-1)
   do k = 1, ao_dim           ! r1
     i1 = ishft(k*k-k,-1)

@@ -65,7 +65,7 @@ double precision function get_ao_two_e_integral_bsplines(i,j,k,l,map) result(res
     ii = ior(ii, k-ao_integrals_bsplines_cache_min)
     ii = ior(ii, j-ao_integrals_bsplines_cache_min)
     ii = ior(ii, i-ao_integrals_bsplines_cache_min)
-    if (iand(ii, -64) /= 0) then
+!    if (iand(ii, -64) /= 0) then
       !DIR$ FORCEINLINE
       call two_e_integrals_index(i,j,k,l,idx)
       !DIR$ FORCEINLINE
@@ -139,7 +139,6 @@ subroutine get_ao_two_e_integrals_bsplines_non_zero(j,k,l,sze,out_val,out_val_in
   non_zero_int = 0
   do i=1,sze
     integer, external :: ao_l4
-    double precision, external :: ao_two_e_integral_bsplines
     !DIR$ FORCEINLINE
   !   TO CHANGE FOR OPT
 !    if (ao_two_e_integral_bsplines_schwartz(i,k)*ao_two_e_integral_bsplines_schwartz(j,l) < thresh) then

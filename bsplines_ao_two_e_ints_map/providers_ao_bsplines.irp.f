@@ -9,7 +9,7 @@ BEGIN_PROVIDER [ logical, ao_two_e_integrals_bsplines_in_map ]
   END_DOC
 
   integer                        :: i,j,k,l
-  double precision               :: ao_two_e_integral_bsplines,cpu_1,cpu_2, wall_1, wall_2
+  double precision               :: cpu_1,cpu_2, wall_1, wall_2
   double precision               :: integral, wall_0
   include 'utils/constants.include.F'
 
@@ -21,18 +21,19 @@ BEGIN_PROVIDER [ logical, ao_two_e_integrals_bsplines_in_map ]
   integer                        :: n_integrals, rc
   integer                        :: kk, m, j1, i1, lmax
   character*(64)                 :: fmt
-
-  integral = ao_two_e_integral_bsplines(1,1,1,1)
-
+  double precision, allocatable :: jl_integrals(:,:)
+  allocate(jl_integrals(ao_dim,ao_dim))
+  call give_all_bsplines_jl(1,1,jl_integrals)
+  
   double precision               :: map_mb
-  PROVIDE read_ao_two_e_integrals_bsplines io_ao_two_e_integrals_bsplines
-  if (read_ao_two_e_integrals_bsplines) then
-    print*,'Reading the AO ERF integrals'
-      call map_load_from_disk(trim(ezfio_filename)//'/work/ao_ints_bsplines',ao_integrals_bsplines_map)
-      print*, 'AO ERF integrals provided'
-      ao_two_e_integrals_bsplines_in_map = .True.
-      return
-  endif
+!  PROVIDE read_ao_two_e_integrals_bsplines io_ao_two_e_integrals_bsplines
+!  if (read_ao_two_e_integrals_bsplines) then
+!    print*,'Reading the AO ERF integrals'
+!      call map_load_from_disk(trim(ezfio_filename)//'/work/ao_ints_bsplines',ao_integrals_bsplines_map)
+!      print*, 'AO ERF integrals provided'
+!      ao_two_e_integrals_bsplines_in_map = .True.
+!      return
+!  endif
 
   print*, 'Providing the AO ERF integrals'
   call wall_time(wall_0)
@@ -87,39 +88,39 @@ BEGIN_PROVIDER [ logical, ao_two_e_integrals_bsplines_in_map ]
 
   ao_two_e_integrals_bsplines_in_map = .True.
 
-  if (write_ao_two_e_integrals_bsplines) then
-    call ezfio_set_work_empty(.False.)
-    call map_save_to_disk(trim(ezfio_filename)//'/work/ao_ints_bsplines',ao_integrals_bsplines_map)
-    call ezfio_set_ao_two_e_bsplines_ints_io_ao_two_e_integrals_bsplines("Read")
-  endif
+!  if (write_ao_two_e_integrals_bsplines) then
+!    call ezfio_set_work_empty(.False.)
+!    call map_save_to_disk(trim(ezfio_filename)//'/work/ao_ints_bsplines',ao_integrals_bsplines_map)
+!    call ezfio_set_ao_two_e_bsplines_ints_io_ao_two_e_integrals_bsplines("Read")
+!  endif
 
 END_PROVIDER
 
 
 
 
-BEGIN_PROVIDER [ double precision, ao_two_e_integral_bsplines_schwartz,(ao_dim,ao_dim)  ]
-  implicit none
-  BEGIN_DOC
-  !  Needed to compute Schwartz inequalities
-  END_DOC
-
-  integer                        :: i,k
-  double precision               :: ao_two_e_integral_bsplines,cpu_1,cpu_2, wall_1, wall_2
-
-  ao_two_e_integral_bsplines_schwartz(1,1) = ao_two_e_integral_bsplines(1,1,1,1)
-  !$OMP PARALLEL DO PRIVATE(i,k)                                     &
-      !$OMP DEFAULT(NONE)                                            &
-      !$OMP SHARED (ao_dim,ao_two_e_integral_bsplines_schwartz)              &
-      !$OMP SCHEDULE(dynamic)
-  do i=1,ao_dim
-    do k=1,i
-      ao_two_e_integral_bsplines_schwartz(i,k) = dsqrt(ao_two_e_integral_bsplines(i,k,i,k))
-      ao_two_e_integral_bsplines_schwartz(k,i) = ao_two_e_integral_bsplines_schwartz(i,k)
-    enddo
-  enddo
-  !$OMP END PARALLEL DO
-
-END_PROVIDER
+!BEGIN_PROVIDER [ double precision, ao_two_e_integral_bsplines_schwartz,(ao_dim,ao_dim)  ]
+!  implicit none
+!  BEGIN_DOC
+!  !  Needed to compute Schwartz inequalities
+!  END_DOC
+!
+!  integer                        :: i,k
+!  double precision               :: ao_two_e_integral_bsplines,cpu_1,cpu_2, wall_1, wall_2
+!
+!  ao_two_e_integral_bsplines_schwartz(1,1) = ao_two_e_integral_bsplines(1,1,1,1)
+!  !$OMP PARALLEL DO PRIVATE(i,k)                                     &
+!      !$OMP DEFAULT(NONE)                                            &
+!      !$OMP SHARED (ao_dim,ao_two_e_integral_bsplines_schwartz)              &
+!      !$OMP SCHEDULE(dynamic)
+!  do i=1,ao_dim
+!    do k=1,i
+!      ao_two_e_integral_bsplines_schwartz(i,k) = dsqrt(ao_two_e_integral_bsplines(i,k,i,k))
+!      ao_two_e_integral_bsplines_schwartz(k,i) = ao_two_e_integral_bsplines_schwartz(i,k)
+!    enddo
+!  enddo
+!  !$OMP END PARALLEL DO
+!
+!END_PROVIDER
 
 
