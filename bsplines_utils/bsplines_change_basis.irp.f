@@ -1,4 +1,4 @@
-program change_basis
+subroutine change_basis
  implicit none
  BEGIN_DOC
 ! program that trick the AO basis in order to have:
@@ -9,7 +9,6 @@ program change_basis
 !
 ! such that it is normalized to unity
  END_DOC
- integer :: i,ip,j,jp
  integer :: ao_num_new
  PROVIDE ezfio_filename
  ao_num_new = ao_dim
@@ -25,51 +24,6 @@ program change_basis
  call routine_ao_coef(ao_num_new)
  ! Then the exponent of the gaussians, set to pi/2 such that they are normalized to unity
  call routine_ao_expo(ao_num_new)
-
- !!!!!!!!!!!!!!!!!! INTEGRALS PART !!!!!!!!!!!!!!!
- ! here you write the overlap, kinetic and e-n potential integrals on disk
- ! and you specify to read all these integrals
-! call write_bsplines_one_e_integrals
-  print*,'HHAHAHAHAHAH'
-  provide ao_bisplines_integrals_in_map  
-  double precision :: get_ao_bsplines_two_e_integral
-  double precision :: tmp
-! print*, bsp_number,bsp_dim
-! print*,''
-! print*,''
-! print*,''
-! print*,'1.358720400729E-04'
-! print*,''
-! i  = 2 
-! j  = 4
-! ip = 4
-! jp = 2
-! print*,'vee',bsp_vee_full(i,ip,j,jp)
-! print*,''
-! print*,''
-! i = 4 
-! ip = 2
-! j  = 4
-! jp = 2
-! print*,'vee',bsp_vee_full(i,ip,j,jp)
-! print*,''
-! print*,''
-  do i=1,ao_dim
-   do j=1,ao_dim
-    do ip=1,ao_dim
-     do jp=1,ao_dim
-       tmp = get_ao_bsplines_two_e_integral(i,j,ip,jp,ao_bsplines_integrals_map)    
-                          !(i,ip|j,jp) ==> <ij|ipjp>
-       if(dabs(bsp_vee_full(i,ip,j,jp)).gt.1.d-10)then
-        if(dabs(tmp - bsp_vee_full(i,ip,j,jp))/dabs(bsp_vee_full(i,ip,j,jp)).gt.1.d-5)then
-        
-          write(55,'(4I4,2X,4(ES20.12E2,X))')i,ip,j,jp,bsp_vee_full(i,ip,j,jp),tmp,dabs(tmp / bsp_vee_full(i,ip,j,jp))
-        endif
-       endif
-     end do
-    end do
-   end do
-  end do
 
 end
 

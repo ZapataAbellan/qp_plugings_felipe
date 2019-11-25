@@ -19,7 +19,7 @@ write(*,*)'ao_dim',ao_dim
 do ao_p=1, ao_dim
  do ao_q=1, ao_dim
   
-  call give_two_e_integrals_pq(ao_p,ao_q,pq_integrals)
+  call give_all_bsplines_kl(ao_p,ao_q,pq_integrals)
   
   do ao_t=1, ao_dim
    do ao_u=1, ao_dim

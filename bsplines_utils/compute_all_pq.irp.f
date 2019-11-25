@@ -1,5 +1,6 @@
 
-subroutine give_two_e_integrals_pq(ao_p,ao_q,pq_integrals)
+subroutine give_all_bsplines_jl(ao_p,ao_q,pq_integrals)
+           
 BEGIN_DOC
 !We enter ao_p and ao_q which are the index of two atomic orbitals and we get out 
 !full_integral(t,u) = (ao_p(1) a_q(1) | ao_t(2) ao_u(2) ) within chemist notation
