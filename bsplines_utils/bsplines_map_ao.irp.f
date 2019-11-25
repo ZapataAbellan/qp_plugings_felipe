@@ -157,6 +157,13 @@ subroutine add_ao_bsplines_integrals_to_map
          !Loop multipolar expansion...
          do k=kmin,kmax
           !
+          !angular coefficient for a given k... 
+          angular = 0.d0
+          do mk=-k,k
+           angular +=  gaunt(lp,mp,k,mk,lq,mq) * gaunt(lt,mt,k,mk,lu,mu) 
+           !print*,'angular',angular
+          end do
+          !
           !Loop over the radial grid...
           !Attention: 
           !R^k is stored in the chemist notation...
@@ -192,12 +199,6 @@ subroutine add_ao_bsplines_integrals_to_map
                  ao_t = ao_to_bspline(mt,lt,(j +jv-1)-1) !e(2)
                  ao_u = ao_to_bspline(mu,lu,(jp+jv-1)-1) !e(2)
                  !
-                 !angular coefficient for a given k... 
-                 angular = 0.d0
-                 do mk=-k,k
-                  angular +=  gaunt(lp,mp,k,mk,lq,mq) * gaunt(lt,mt,k,mk,lu,mu) 
-                  !print*,'angular',angular
-                 end do
                                 
                  !bsp_vee_full(ao_p,ao_q,ao_t,ao_u) += c * angular
 
