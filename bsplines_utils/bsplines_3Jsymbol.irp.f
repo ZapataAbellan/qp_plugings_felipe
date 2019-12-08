@@ -1,67 +1,43 @@
+       BEGIN_PROVIDER [double precision, bsp_3j , (0:2*bsp_lmax,-2*bsp_lmax:2*bsp_lmax,0:2*bsp_lmax,-2*bsp_lmax:2*bsp_lmax,0:2*bsp_lmax,-2*bsp_lmax:2*bsp_lmax)]
 
-       double precision function gaunt(l,m,k,mk,lp,mp)
-       
-       !gaunt = < l m | C_mk^k | l' m' > 
+       BEGIN_DOC
+       !Provides all the required 3j-Wigner symbols
+       END_DOC
 
        implicit none
-       integer::k,mk
-       integer::l,m
-       integer::lp,mp
-       double precision::three0,threeJ
-       double precision::coef
-       double precision::coef_1
-       double precision::coef_2
+       
+       integer :: dlmax
+       integer :: l, m
+       integer :: k, mk
+       integer :: lp, mp
+       
+       double precision :: tmp
 
-       !3j-symbols...
-       three0 = bsp_3j_symbol(l,0,k,0,lp,0)
-       threeJ = bsp_3j_symbol(l,-m,k,mk,lp,mp)
+       bsp_3j(:,:,:,:,:,:) = 0.d0
+  
+       dlmax = 2*bsp_lmax
 
-       !Coefficients... 
-       coef   = (-1.d0)**m
-       coef_1 = dsqrt(dfloat(2*l+1))
-       coef_2 = dsqrt(dfloat(2*lp+1))
+       do l=0,dlmax
+        do m=-l,l
+         !
+         do k=0,dlmax
+          do mk=-k,k
+           !
+           do lp=0,dlmax
+            do mp=-lp,lp
+              
+             call ThreeJBGN(dfloat(l),dfloat(m),dfloat(k),dfloat(mk),dfloat(lp),dfloat(mp),tmp)
+             
+             bsp_3j(l,m,k,mk,lp,mp) = tmp
+           
+            end do
+           end do
+          end do
+         end do 
+        end do
+       end do
 
-       !Gaunt coefficient...                                  
-       !< l m | C_mk^k | l' m' > = (-1)^m [(2l+1)(2lp+1)]^1/2 ||(l;k;lp)(-m;mk;mp)|| ||(l;k;lp)(0;0;0)||
-
-       gaunt = coef*coef_1*coef_2*three0*threeJ
-
-       return
-  end function gaunt
-    
-   
-
- BEGIN_PROVIDER [double precision,  bsp_3j_symbol , (0:bsp_lmax,-bsp_lmax:bsp_lmax,0:2*bsp_lmax,-2*bsp_lmax:2*bsp_lmax,0:bsp_lmax,-bsp_lmax:bsp_lmax)]
-
- implicit none
- 
- double precision :: three3J
- integer:: lp,mp,lq,mq,k,mk
-
- three3J = 0.d0
-
- do lp=0,bsp_lmax
-  do mp=-lp,lp
-   !
-   do lq=0,bsp_lmax
-    do mq=-lq,lp
-     !
-     do k=0,2*bsp_lmax
-      do mk=-k,k
-      
-       call ThreeJBGN(dfloat(lp),dfloat(mp),dfloat(k),dfloat(mk),dfloat(lq),dfloat(mq),three3J)
-
-       bsp_3j_symbol(lp,mp,k,mk,lq,mq) = three3J
-
-      end do 
-     end do
-    end do
-   end do
-  end do
- end do 
-
- END_PROVIDER
-
+       END_PROVIDER
 
        subroutine ThreeJBGN(AJ,am,BJ,bm,J,m,threeJ)
 !c
