@@ -1,0 +1,57 @@
+qp_run - Quantum Package command 
+
+Usage:
+  
+  qp_run [-h] [-p <string>] [-s] [--] PROGRAM EZFIO_DIR
+  
+Arguments:
+  
+  PROGRAM                Name of the QP program to be run 
+  EZFIO_DIR              EZFIO directory 
+  
+Options:
+  
+  -h  --help             Prints the help message. 
+  -p  --prefix=<string>  Prefix before running the program, like gdb 
+                         or valgrind. 
+  -s  --slave            Required to run slave tasks in distributed
+                         environments. 
+  
+Description:
+  
+  Executes a Quantum Package binary file among these: 
+  
+  * 
+  * bsplines_change_basis 
+  * bsplines_check 
+  * bsplines_ezfio_and_integrals 
+  * bsplines_two_e_give_integrals 
+  * bsplines_write_matrices 
+  * casscf 
+  * cis 
+  * cisd 
+  * diagonalize_h 
+  * fci 
+  * fcidump 
+  * four_idx_transform 
+  * get_energy 
+  * ks_scf 
+  * molden 
+  * print_ci_vectors 
+  * print_e_conv 
+  * print_wf 
+  * pt2 
+  * rotate_mos 
+  * rs_ks_scf 
+  * save_natorb 
+  * save_one_e_dm 
+  * save_ortho_mos 
+  * scf 
+  * script.sh 
+  * sort_by_fock_energies 
+  * swap_mos 
+  * test_pert_2rdm 
+  * test_symbols 
+  * write_integrals_erf 
+  
+  

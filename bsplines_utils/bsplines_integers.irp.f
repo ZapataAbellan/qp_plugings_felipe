@@ -34,5 +34,22 @@ BEGIN_PROVIDER [integer, ao_dim]
  enddo
 END_PROVIDER
 
+BEGIN_PROVIDER [integer, bsp_dlmax]
+BEGIN_DOC
+!double of the maximum angular momenta dlmax = 2 x lmax
+END_DOC
+implicit none
+bsp_dlmax = 2 * bsp_lmax 
+END_PROVIDER
+
+BEGIN_PROVIDER [integer, bsp_qlmax]
+BEGIN_DOC
+!double of the maximum angular momenta qlmax = 4 x lmax
+END_DOC
+implicit none
+bsp_qlmax = 4 * bsp_lmax 
+END_PROVIDER
+
+
 
 

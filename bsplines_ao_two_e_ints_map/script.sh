@@ -13,9 +13,10 @@ qp set_file ${ezfio}
 qp set bsplines_utils bsp_box_size 20. 
 qp set bsplines_utils bsp_number 4
 qp set bsplines_utils bsp_order 3
-qp set bsplines_utils bsp_lmax 1
+qp set bsplines_utils bsp_lmax 2
 qp set bsplines_utils bsp_glp 3
 
 qp run bsplines_ezfio_and_integrals | tee ${ezfio}.change.out
+#qp run test_symbols | tee ${ezfio}.change.out
 #qp run bsplines_change_basis | tee ${ezfio}.change.out 
 #qp run bsplines_check        | tee ${ezfio}.check.out 
