@@ -1,0 +1,463 @@
+% interacttfosample.tex
+% v1.01 - May 2016
+
+\documentclass[]{interact}
+
+\usepackage{epstopdf}% To incorporate .eps illustrations using PDFLaTeX, etc.
+\usepackage{subfigure}% Support for small, `sub' figures and tables
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{color,calc}
+\usepackage[latin1]{inputenc}
+\usepackage{amssymb}
+\usepackage{empheq}
+\usepackage{nccmath}
+\usepackage{titlesec}
+\usepackage{mathrsfs}
+\usepackage{lscape}
+\usepackage{fancybox}
+\usepackage{dcolumn}
+\usepackage{rccol}
+%\usepackage[usenames,dvipsnames]{pstricks}
+\usepackage{afterpage}
+\usepackage{bm}
+\usepackage{rotating}
+\usepackage{cancel}
+\usepackage{fancyhdr}
+\usepackage{cases}
+\usepackage{textcomp}
+\usepackage{longtable}
+\usepackage{multirow}
+
+\usepackage[numbers,sort&compress,merge]{natbib}% Citation support using natbib.sty
+\bibpunct[, ]{[}{]}{,}{n}{,}{,}% Citation support using natbib.sty
+\renewcommand\bibfont{\fontsize{13}{15}\selectfont}% Bibliography support using natbib.sty
+\renewcommand*{\baselinestretch}{1.5}
+
+\def\blue{\textcolor{blue}}
+\def\red{\textcolor{red}}
+\def\green{\textcolor{green}}
+\def\magenta{\textcolor{magenta}}
+
+% \theoremstyle{plain}% Theorem-like structures
+% \newtheorem{theorem}{Theorem}[section]
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{proposition}[theorem]{Proposition}
+
+% \theoremstyle{definition}
+% \newtheorem{definition}[theorem]{Definition}
+% \newtheorem{example}[theorem]{Example}
+
+% \theoremstyle{remark}
+% \newtheorem{remark}{Remark}
+% \newtheorem{notation}{Notation}
+
+% % % % % % % % % %
+% % Definitions % %
+% % % % % % % % % %
+
+\def\refe#1{{\color{blue}\textsf{Eq.}\,(\ref{#1})}}
+\def\reft#1{{\color{blue}\textsf{Table} \ref{#1}}}
+\def\reff#1{{\color{blue}\textsf{Figure} \ref{#1}}}
+\def\refs#1{{\color{blue}\textsf{Section} \ref{#1}}}
+\def\refsb#1{{\color{blue}\textsf{Subection} \ref{#1}}}
+\def\refc#1{{\color{blue}\textsf{Chapter} \ref{#1}}}
+\def\refa#1{{\color{blue}\textsf{Appendix} \ref{#1}}}
+
+\def\deriv#1#2{\dfrac{\partial#1}{\partial#2}}
+\def\derivdos#1#2{\dfrac{\partial^2#1}{\partial#2^2}}
+\def\derivt#1{\dfrac{\partial#1}{\partial t}}
+\def\paruno#1{\dfrac{\partial}{\partial#1}}
+\def\pardos#1{\dfrac{\partial^2}{\partial#1^2}}
+\def\dt{\Delta t}
+\def\medio{\frac{1}{2}}
+
+\def\r#1{{\bf r}_#1}
+\def\d{\mathrm{d}}
+
+\def\rr{\frac{r^{p}_{<}}{r^{p+1}_{>}}}
+
+\def\Ykm#1{Y_{p}^{m}(\theta_#1,\phi_#1)}
+\def\Ykmp#1{Y_{p}^{m}(\theta_#1,\phi_#1)}
+
+\def\Ya#1{Y_{l_\mu}^{m_\mu}(\theta_#1,\phi_#1)}
+\def\Yb#1{Y_{l_\nu}^{m_\nu}(\theta_#1,\phi_#1)}
+\def\Yc#1{Y_{l_\lambda}^{m_\lambda}(\theta_#1,\phi_#1)}
+\def\Yd#1{Y_{l_\sigma}^{m_\sigma}(\theta_#1,\phi_#1)}
+
+\renewcommand{\l}{\ell}
+
+
+\begin{document}
+
+%\articletype{Supplementary Material}
+
+\title{Matrix components of the electrostatic interaction between two electrons}
+
+\author{
+\name{Felipe Zapata and Eeleonora Luppi}
+\affil{Laboratoire de Chimie Th\'eorique, Sorbonne Universit\'e, 75005 Paris, France}}
+
+\maketitle
+
+\begin{abstract} 
+This document contains the essential ingredients for the computation of matrix elements appearing when describing the electrostatic interaction, in terms of the Coulomb-repulsion $1/r_{12}$ interaction, between two uncoupled electrons. 
+\end{abstract}
+
+\begin{keywords}
+Tensor operators, Wigner-Eckard theorem, Slater integrals, Gaunt coefficients.
+\end{keywords}
+
+\section{Clebsch-Gordan coefficients and $3j$-symbols.}
+
+The Clebsch-Gordan (CG) coefficient is defined by the unitary transformation
+\begin{equation}
+ | abc\gamma \rangle=\sum_{\alpha\beta}|ab\alpha\beta\rangle\langle ab\alpha\beta|c\gamma\rangle
+\end{equation}
+and vanishes unless $\alpha+\beta=\gamma$. It can be numerically computed using the general formula obtained by Racah and given in Ref. \cite{Brink} p.34,
+\begin{equation}
+\label{CG}
+\begin{array}{rcl}
+ \langle ab\alpha\beta|c\gamma\rangle&=&\delta(\alpha+\beta,\gamma)\Delta(abc)\\
+ & &\times[(2c+1)(a+\alpha)!(a-\alpha)!(b+\beta)!(b-\beta)!(c+\gamma)!(c-\gamma)!]^{1/2}\\
+ & &\times\sum_\nu(-1)^\nu\left[\nu!(a-\alpha-\nu)!(c-b+\alpha+\nu)!(b+\beta-\nu)!\right.\\
+ & &\times\left.(c-a-\beta+\nu)!(a+b-c-\nu)!\right]^{-1},
+\end{array}
+\end{equation}
+where 
+\begin{equation}
+ \Delta(abc)=\left[\frac{(a+b+c)!(a+c-b)!(b+c-a)!}{(a+b+c+1)!}\right]^{1/2},
+\end{equation}
+and $\nu$ runs over all values which do not led to negative factorials. We have to mention that different authors implemented different notations for the CG coefficient. In some cases, phase factors are also included in the definition. For cross referring, \emph{see} Appendix I in Ref. \cite{Brink} and Table 3.1 in p. 52 in Ref. \cite{Edmonds}.  
+
+The Wigner $3j$-symbol is related to \refe{CG} by
+\begin{equation}
+ \langle ab\alpha\beta|c-\gamma\rangle = (-1)^{a-b-\gamma}(2c+1)^{1/2}\left(\begin{array}{ccc} a&b&c \\ \alpha&\beta&\gamma \end{array}\right).
+\end{equation}
+
+A useful quantity, related to the Wigner $3j$-symbol, is  defined by Racah in Ref. \cite{Racah},
+\begin{equation}
+\label{V}
+ V(abc;\alpha\beta\gamma) = (-1)^{c+b-a}\left(\begin{array}{ccc} a&b&c \\ \alpha&\beta&\gamma \end{array}\right).
+\end{equation}
+Some important symmetry properties can be established for $V$: 
+\begin{equation}
+\label{symmetry}
+ \begin{array}{rcll}
+  V(abc;\alpha\beta\gamma)&=&(-1)^{a+b-c}&V(bac;\beta\alpha\gamma)\\
+                          &=&(-1)^{a+b+c}&V(acb;\alpha\gamma\beta)\\
+                          &=&(-1)^{a-b+c}&V(cba;\gamma\beta\alpha)\\
+                          &=&(-1)^{2b}   &V(cab;\gamma\alpha\beta)\\
+                          &=&(-1)^{2c}   &V(bca;\beta\gamma\alpha)\\
+                          &=&(-1)^{2\gamma}&V(bac;-\beta-\alpha-\gamma)\\
+                          &=&(-1)^{a+b+c}  &V(abc;-\alpha-\beta-\gamma).
+ \end{array}
+\end{equation}
+
+$V$ is not zero only if:
+\begin{itemize}
+ \item $\;\;\alpha+\beta+\gamma=0$.\\
+ 
+ 
+ \item $\;\left\{\begin{array}{ccc}a+b&\geqq& c, \\ 
+                                   b+c&\geqq& a, \\
+                                   c+a&\geqq& a.\end{array}\right.$
+\end{itemize}
+
+\vspace{0.4cm}
+
+% In addition, it can be shown that, $V$ satisfies the following relation 
+% \begin{equation}
+%  \sum_{\alpha\beta}V(abc;\alpha\beta\gamma)V(abc';\alpha\beta\gamma')=\frac{\delta(c,c')\delta(\gamma,\gamma')}{2c+1},
+% \end{equation}
+% for $|a+b|\geqq c \geqq|a-b|$ and $c \geqq|\gamma|$, otherwise the left side vanishes. 
+
+For the particular case $\alpha=\beta=\gamma=0$, $V(abc;000)$ vanishes if $(a+b+c)$ is an odd. On the contrary, if $(a+b+c)=2g$ is an even, then we have
+\begin{equation}
+  V(abc;000)=(-1)^g\left[\frac{(a+b+c)!(a+c-b)!(b+c-a)!}{(a+b+c+1)!}\right]^{1/2}\frac{g!}{(g-a)!(g-b)!(g-c)!},
+\end{equation}
+with $g$ integer. 
+
+\section{Orbital angular momentum and spherical harmonics.}
+
+We introduce now some important definitions concerning the spherical-harmonic functions. In this document we implemented the notation used in Ref. \cite{Condon}. 
+
+The angular momentum of a single particle is defined as
+\begin{equation}
+ {\bf L= r \wedge p },\;\;\mathrm{with}\;\;p_x=-i\frac{\partial}{\partial x},\;\;\mathrm{etc.}, 
+\end{equation}
+and in spherical coordinates as
+\begin{equation}
+ \begin{array}{rcl}
+  {\bf L}^2&=&-\left[\frac{1}{\sin\theta}\frac{\partial}{\partial\theta}\left(\sin\theta\frac{\partial}{\partial\theta}\right)+\frac{1}{\sin^2\theta}\frac{\partial^2}{\partial\phi^2}\right],\\
+  L_z&=&-i\frac{\partial}{\partial\phi}.
+ \end{array}
+\end{equation}
+
+The simultaneous eigenfunctions of ${\bf L}^2$ and $L_z$ are the spherical harmonics, which are complex functions defined for $\l\geq0$ and $m_\l=-\l,...,\l$, as
+\begin{equation}
+\label{harmonic}
+ Y_{\l}^{m_\l}(\theta,\phi) = \Theta_\l^{m_\l}(\theta)\Phi_{m_\l}(\phi),
+\end{equation}
+where 
+\begin{equation}
+ \Phi_{m_\l}(\phi) = \frac{1}{\sqrt{(2\pi)}}e^{im_\l\phi}, 
+\end{equation}
+and the function $\Theta_\l^{m_\l}$ can be defined in terms of the derivatives of the Legendre polynomials, 
+\begin{equation}
+ (m_\l>0)\;\left\{\begin{array}{ccc} \Theta_\l^{m_\l} = & (-1)^{m_\l} & \left[\frac{(2\l+1)}{2}\frac{(l-m)!}{(l+m)!}\right]^{1/2}[\sin\theta]^{m_\l}\frac{\d^{m_\l}}{(\d\cos\theta)^{m_\l}}P_\l(\cos\theta), \\ \Theta_\l^{-m_\l}  = & &  \left[\frac{(2\l+1)}{2}\frac{(l-m)!}{(l+m)!}\right]^{1/2}[\sin\theta]^{m_\l}\frac{\d^{m_\l}}{(\d\cos\theta)^{m_\l}}P_\l(\cos\theta),\end{array}\right. 
+\end{equation}
+having the following relation,
+\begin{equation}
+\label{phase}
+ \Theta_\l^{m_\l} = (-1)^{m_\l}\Theta_\l^{-m_\l}.
+\end{equation}
+A simple example of a spherical-harmonic function is given by $$Y_{\l}^{0}(\theta,\phi) = \left(\frac{2\l+1}{4\pi}\right)^{1/2} P_\l(\cos\theta),$$
+for $\l\geq0$ and $m_\l=0$, where $P_\l(\cos\theta)$ are the Legendre polynomials.
+
+The definition of spherical harmonics presented here involves an arbitrary choice of phase. We follow the phase condition imposed by Condon and Shortley, \emph{see} p. 52 in Ref. \cite{Condon}. As a consequence, the complex conjugation of  \refe{harmonic} is given by
+\begin{equation}
+ \begin{array}{rrl}
+  [Y_{\l}^{m_\l}(\theta,\phi)]^* &=&\Theta_\l^{m_\l}(\theta)[\Phi_{m_\l}(\phi)]^*\\
+                    &=&\Theta_\l^{m_\l}(\theta)\Phi_{-m_\l}(\phi)\\
+                    &=&(-1)^{m_\l}\Theta_\l^{-m_\l}(\theta)\Phi_{-m_\l}(\phi)\\
+                    &=&(-1)^{m_\l}Y_{\l}^{-m_\l}(\theta,\phi).
+ \end{array}
+\end{equation}
+
+
+In addition, one also can see that spherical harmonics are normalized and orthogonal over the unit sphere
+\begin{equation}
+ \langle Y_{\l}^{m_\l}|Y_{\l'}^{m_\l'}\rangle \equiv \int_0^{2\pi}\int_0^{\pi}[Y_{\l}^{m_\l}(\theta,\phi)]^*Y_{\l'}^{m_\l'}(\theta,\phi)\sin\theta\d\theta\d\phi=\delta(\l,\l')\delta(m_\l,m_\l').
+\end{equation}
+Thus, they form a complete set for expanding bounded functions of $\theta$ and $\phi$.
+
+Finally, we introduce the notation implemented by Racah in Ref. \cite{Racah} when dealing with tensor operators (\emph{see}  p. 25 in  Ref. \cite{Edmonds}), 
+\begin{equation}
+\label{tensor}
+ C_q^{(k)}=\left(\frac{4\pi}{2k+1}\right)^{1/2} Y_{k}^{q}(\theta,\phi).
+\end{equation}
+
+
+\section*{The addition theorem of spherical harmonics.}
+
+A detailed proof of this theorem can be found in p. 53 in Ref. \cite{Condon} and in p. 44 in Ref. \cite{Cowan}. It expresses the Legendre polynomials of the angle $\omega$ between the directions $(\theta,\phi)$ and $(\theta',\phi')$ in terms of spherical harmonics of $(\theta,\phi)$ and $(\theta',\phi')$. The formula is 
+\begin{equation}
+\label{theoremY}
+\begin{array}{rll}
+ P_\l(\cos\omega)&=&\frac{4\pi}{2\l+1}\sum_{m_\l=-\l}^{+\l}(-1)^{m_\l}Y_{\l}^{-m_\l}(\theta,\phi)Y_{\l}^{m_\l}(\theta',\phi')\\
+ &=&\frac{4\pi}{2\l+1}\sum_{m_\l=-\l}^{+\l}[Y_{\l}^{m_\l}(\theta,\phi)]^*Y_{\l}^{m_\l}(\theta',\phi'),
+\end{array}
+\end{equation}
+where $\cos\omega=\cos\theta\cos\theta'+\sin\theta\sin\theta'\cos(\phi-\phi')$.
+Additionally, one can make use of Racah's notation from \refe{tensor} and write \refe{theoremY} in terms of the function $C_q^{(k)}$ (\emph{see}  p. 63 in Ref. \cite{Edmonds}),
+\begin{equation}
+ \begin{array}{rll}
+ \label{theoremC}
+ P_k(\cos\omega)&=&\sum_{q=-k}^{+k}(-1)^{q}C_{-q}^{(k)}(\theta,\phi)C_{q}^{(k)}(\theta',\phi')\\
+ &=&\sum_{q=-k}^{+k}[C_{q}^{(k)}(\theta,\phi)]^*C_{q}^{(k)}(\theta',\phi').
+\end{array}
+\end{equation}
+Note that this expression is symmetric with respect to the exchange of $(\theta,\phi)\leftrightarrow(\theta',\phi')$.
+
+\section{Tensor operators and Wigner-Eckard theorem.}
+
+It can be shown that the matrix element of the electrostatic interaction between two electrons depends on matrix components of the spherical harmonics $Y_\l^{m_\l}$ (\emph{see} p. 174 in Ref. \cite{Condon}). In this case, the spherical harmonics play the role of operators and not of eigenfunctions, and it appears convenient to consider, in a general way, the properties of such operators. 
+
+The ``irreducible tensor operators'' were introduced by Racah in p. 441 in Ref. \cite{Racah}. They are defined as each operator ${\bf T}^{(k)}$ whose $2k+1$ components $T_q^{(k)}\;\;(q=-k,...,k)$ satisfy the following commutation rules,
+\begin{eqnarray}
+\label{commutations}
+\nonumber
+ \left[J_x\pm iJ_y,T_q^{k}\right]&=&\left[(k\mp q)(k\pm q+1)\right]^{1/2}\;T_{q\pm1}^{(k)},\\
+ \left[J_z,T_q^{k}\right]&=&\;q\;T_q^{k},
+\end{eqnarray}
+with $T_q^{k}$ being Hermitian if 
+\begin{equation}
+ \left[T_q^{(k)}\right]^\dag=(-1)^q T_{-q}^{(k)}.
+\end{equation}
+
+The scalar product of two tensors is given by the quantity
+\begin{equation}
+ Q=({\bf T}^{(k)}\cdot{\bf U}^{(k)})=\sum_q (-1)^q T_q^{(k)}U_{-q}^{(k)},
+\end{equation}
+where the most important example of such scalar products is given by the spherical-harmonic addition theorem \refe{theoremC}, \emph{see} p. 443 in Ref. \cite{Racah}. 
+
+The matrix elements of $T_{q}^{(k)}$, in the $\l m_\l$ scheme, can be derived from \refe{commutations}, \emph{see} p. 442 in Ref. \cite{Racah}, and are given by
+\begin{equation}
+\label{theoremW}
+ \langle n\l m_\l|T_{q}^{(k)}|n'\l' m'_{\l'}\rangle=(-1)^{\l+m_\l}\langle n\l||T^{(k)}||n'\l'\rangle V(\l\l'k;-m_\l m'_{\l'}q),
+\end{equation}
+where the component $\langle n\l||T^{(k)}||n'\l'\rangle$ is called the reduced matrix element which is independent of $m_\l,m'_{\l'}$. Also, it must be observed that, for an Hermitian tensor ${\bf T}^{(k)}$, the matrix  $\langle n\l||T^{(k)}||n'\l'\rangle$ is not Hermitian but satisfies the relation
+\begin{equation}
+ \langle n\l||T^{(k)}||n'\l'\rangle = (-1)^{\l-\l'}\left[\langle n'\l'||T^{(k)}||n\l\rangle\right]^*.
+\end{equation}
+
+\refe{theoremW} is named as the Wigner-Eckard theorem. In Table 5.1 (p. 87) in Ref. \cite{Edmonds}, one can find a collection of different notations, used by different authors, for this expression. The selection rules of \refe{theoremW} are dominated by the selection rules of the function $V$. For this reason, it can be shown that, the only non-vanishing elements of $\langle n\l m_\l|T_{q}^{(k)}|n'\l' m'_{\l'}\rangle$  are those for which 
+\begin{equation}
+\label{q}
+ q=m_\l-m'_{\l'}.
+\end{equation}
+
+
+\section{Matrix elements of a spherical-harmonic tensor operator.}
+
+The matrix elements of $C_q^{(k)}$ will be given by \refe{theoremW},
+\begin{equation}
+\label{spherical_element}
+ \langle \l m_\l|C_q^{(k)}|\l' m'_{\l'}\rangle = (-1)^{\l+m_\l}\langle \l ||C_q^{(k)}||\l'\rangle V(\l\l'k;-m_\l m'_{\l'}q),
+\end{equation}
+where the reduced element $\langle \l ||C^{(k)}||\l'\rangle$, derived by Racah in Ref. \cite{Racah}, is given by
+\begin{equation}
+\label{reducedC}
+ \langle \l ||C^{(k)}||\l'\rangle=(-1)^{-\l}[(2\l+1)(2\l'+1)]^{1/2}V(\l\l'k;000),
+\end{equation}
+being symmetric in $(\l)\leftrightarrow(\l')$.
+
+Now, if we make use of \refe{q}, the matrix element \refe{spherical_element} can be written in terms of the Gaunt coefficient,
+\begin{equation}
+\label{Gaunt}
+\begin{array}{rcl}
+  c^k(\l m_\l,\l'm'_{\l'})&=&\langle \l m_\l|C_{m_\l-m'_{\l'}}^{(k)}|\l' m'_{\l'}\rangle\\
+  &=& (-1)^{\l+m_\l}\langle \l ||C^{(k)}||\l'\rangle V(\l\l'k;-m_\l m'_{\l'} m_\l-m'_{\l'}).
+\end{array}
+\end{equation}
+
+\refe{Gaunt} is not symmetric in $(\l m_\l)\leftrightarrow(\l'm'_{\l'})$. However, it can be shown that, by using the symmetric properties of $V$, one has
+\begin{equation}
+\label{GauntS}
+ c^k(\l m_\l,\l'm'_{\l'})=(-1)^{m_\l-m'_{\l'}}c^k(\l' m'_{\l'},\l m_{\l}).
+\end{equation}
+
+The selection rules of the Gaunt coefficients are controlled by the Racah functions appearing in \refe{reducedC} and in \refe{Gaunt}. Then, $c^k(\l m_\l,\l'm'_{\l'})$ is not zero unless $\l+\l'+k=2g$ (with $g$ integer) and only if $|\l-\l'|\leqq k\leqq \l+\l'$ (that means, $k$ respects the triangle condition given in \refe{V}). In addition, it can be shown that $k\geqq|m-m'_{l'}|$. Some Gaunt coefficients can be found tabulated in p. 178 in Ref. \cite{Condon} 
+
+\section{Matrix elements of the electrostatic interaction between two uncoupled electrons in the $n\l m_\l$ scheme.}
+
+\refe{two} represents the matrix component of the electrostatic interaction, given by the Coulomb repulsion interaction $1/r_{12}$, between two electrons. This integral is expressed here in the so called ``\emph{physicist notation}'' and in atomic units:
+\begin{equation}
+\label{two}
+\begin{array}{rcl}
+\langle ab|cd \rangle = \int\int\varphi_a^*(\r1)\varphi_b^*(\r2)\frac{1}{r_{12}}\varphi_c(\r1)\varphi_d(\r2)\d\r1\d\r2,
+\end{array}
+\end{equation}
+The single-electron eigenfunctions are given by  
+\begin{equation}
+\label{orbitals}
+\begin{array}{rcl}
+\varphi_a(\r1) = \frac{1}{r_1}R_{n^a}^{\l^a}(r_1)Y_{\l^a}^{m_\l^a}(\theta_1,\phi_1)\delta(\sigma_1,m_s^a).
+\end{array}
+\end{equation}
+Then, \refe{two} can be factored into the product of a sextuple integral over the six positional coordinates and a double sum over the two spin coordinates, such as
+\begin{equation}
+ \sum_{\sigma_1,\sigma_2}\delta(\sigma_1,m_s^a)\delta(\sigma_1,m_s^c)\delta(\sigma_2,m_s^b)\delta(\sigma_2,m_s^d)=\delta(m_s^a,m_s^c)\delta(m_s^b,m_s^d).
+\end{equation}
+As a consequence, the spin components of $a$ and $c$, and $b$ and $d$, must be the same or the integral vanishes.
+
+Concerning the Coulomb potential, it can be developed in a series of Legendre polynomials
+\begin{equation}
+ \frac{1}{r_{12}}=\sum_{k=0}^\infty\;\frac{r_<^k}{r_>^{k+1}}\;P_k(\cos\omega),
+\end{equation}
+in which $r_<=\mathrm{min}(r_1,r_2)$ and $r_>=\mathrm{max}(r_1,r_2)$. Therefore, the part of \refe{two} independent of spins can be written as
+\begin{equation}
+\begin{array}{lll}
+\label{integral0}
+ \langle ab|cd \rangle &=& \sum_{k=0}^\infty\left\{\int_0^\infty\int_0^\infty R_{n^a}^{\l^a}(r_1)R_{n^b}^{\l^b}(r_2)\;\frac{r_<^k}{r_>^{k+1}}\;R_{n^c}^{\l^c}(r_1)R_{n^d}^{\l^d}(r_2)\d r_1\d r_2\right.\\
+ &&\left.\times\int\int\left[Y_{\l^a}^{m_\l^a}(\Omega_1)\right]^*\left[Y_{\l^b}^{m_\l^b}(\Omega_2)\right]^*\;P_k(\cos\omega)\;Y_{\l^c}^{m_\l^c}(\Omega_1)Y_{\l^d}^{m_\l^d}(\Omega_2)\d\Omega_1\d\Omega_2\right\},
+\end{array}
+\end{equation}
+where we have used the abbreviations $\Omega_1=(\theta_1,\phi_1)$ and $\Omega_2=(\theta_2,\phi_2)$.
+
+The radial integral is denoted as the Slater integral, 
+\begin{equation}
+\label{slater}
+ R^k(abcd)=\int_0^\infty\int_0^\infty R_{n^a}^{\l^a}(r_1)R_{n^b}^{\l^b}(r_2)\;\frac{r_<^k}{r_>^{k+1}}\;R_{n^c}^{\l^c}(r_1)R_{n^d}^{\l^d}(r_2)\d r_1\d r_2.
+\end{equation}
+For a numerical solution of this integral \emph{see} Ref. \cite{Fischer}. We also mention that this radial integral presents the following symmetries: $R^k(abcd)=R^k(cbad)=R^k(adcb)=R^k(badc)=R^k(dabc)=R^k(bcda)=R^k(dcba)=R^k(cdab)$. 
+
+Attention can be now focused on the angular part of \refe{integral0}. The Legendre polynomial can be expanded by making use of the addition theorem \refe{theoremC}. This expansion permits us to write the angular integral occurring in the $k^\mathrm{th}$ term as follows
+\begin{equation}
+ \sum_{q=-k}^{k}(-1)^q\int \left[Y_{\l^a}^{m_\l^a}(\Omega_1)\right]^*C^{k}_q(\Omega_1)Y_{\l^c}^{m_\l^c}(\Omega_1)\d\Omega_1\int \left[Y_{\l^b}^{m_\l^b}(\Omega_2)\right]^*C^{k}_{-q}(\Omega_2)Y_{\l^d}^{m_\l^d}(\Omega_2)\d\Omega_2,
+\end{equation}
+or, in a more compact way, as 
+\begin{equation}
+\label{angular0}
+ \sum_{q=-k}^{k}(-1)^q\langle {\l^a}{m_\l^a}|C^{k}_q|{\l^c}{m_\l^c}\rangle \langle {\l^b}{m_\l^b}|C^{k}_{-q}|{\l^d}{m_\l^d}\rangle.
+\end{equation}
+The selection rules for the matrix elements $\langle {\l^a}{m_\l^a}|C^{k}_q|{\l^c}{m_\l^c}\rangle$ and $\langle {\l^b}{m_\l^b}|C^{k}_{-q}|{\l^d}{m_\l^d}\rangle$ are determined by the Racah $V$ function as exposed previously. For this reason, $\langle {\l^a}{m_\l^a}|C^{k}_q|{\l^c}{m_\l^c}\rangle$ is not zero unless $q=m_\l^a-m_\l^c$, and $\langle {\l^b}{m_\l^b}|C^{k}_{-q}|{\l^d}{m_\l^d}\rangle$ is not zero unless $q=m_\l^d-m_\l^b$. So, in the summation over $q$ everything vanishes unless
+$$m_\l^a-m_\l^c=m_\l^d-m_\l^b,$$
+that is, unless
+\begin{equation}
+\label{q_condition}
+ m_\l^a+m_\l^b=m_\l^c+m_\l^d.
+\end{equation}
+That means, there are no matrix components connecting states which differ in the value of the $z$ component of the total orbital angular momentum. This fact is consistent with the commutation of $1/r_{12}$ and $L_z$. For states which do not differ in this value, only one term of the sum over $q$ remains, namely that for 
+$$q=m_\l^a-m_\l^c=m_\l^d-m_\l^b.$$
+As a consequence, \refe{angular0} is reduced to a single term
+\begin{equation}
+ \langle {\l^a}{m_\l^a}|C^{k}_{m_\l^a-m_\l^c}|{\l^c}{m_\l^c}\rangle\left[(-1)^{m_\l^d-m_\l^b}\langle {\l^b}{m_\l^b}|C^{k}_{m_\l^d-m_\l^b}|{\l^d}{m_\l^d}\rangle\right],
+\end{equation}
+and, by using the definition of Gaunt coefficient \refe{Gaunt}, together with \refe{GauntS}, it can be shown that the angular term is given by
+\begin{equation}
+ c^k({\l^a}{m_\l^a},{\l^c}{m_\l^c})c^k({\l^d}{m_\l^d},{\l^b}{m_\l^b}),
+\end{equation}
+which is the same result obtained by Condon and Shortley in p. 175 in Ref. \cite{Condon}. We note that this expression is not symmetric with respect the exchanges $({\l^a}{m_\l^a}\leftrightarrow{\l^c}{m_\l^c})$ and $({\l^d}{m_\l^d}\leftrightarrow{\l^b}{m_\l^b})$. However, the condition \refe{GauntS} is also applicable here.
+
+Finally, the expression for the integral \refe{two} is given by
+\begin{equation}
+\begin{array}{rcl}
+  \langle ab|cd \rangle &=& \delta(m_s^a,m_s^c)\delta(m_s^b,m_s^d) \delta(m_\l^a+{m_\l^b},{m_\l^c}+{m_\l^d})\\
+  &&\times\sum_{k=0}^\infty c^k({\l^a}{m_\l^a},{\l^c}{m_\l^c})c^k({\l^d}{m_\l^d},{\l^b}{m_\l^b})R^k(abcd),
+\end{array}
+\end{equation}
+where the $\delta(m_\l^a+{m_\l^b},{m_\l^c}+{m_\l^d})$ comes from the condition \refe{q_condition}, and the range of $k$ is limited to a few values due to the selection rules coming from the Gaunt coefficients. 
+
+
+Finally, we have to mention that, another way of computing \refe{two}, is by making use of  \emph{angular-momentum graphs}, see for example p. 66 in Ref. \cite{Lindgren}.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begingroup
+\vspace{-0.25cm}
+\small
+\begin{thebibliography}{1}
+\vspace{-0.25cm}
+
+%insert your references here using \bibitem
+\bibitem{Brink}  D. M. Brink and G. R. Satchler, \emph{Angular Momentum} (Oxford, 1993). 
+
+
+\bibitem{Edmonds} A. R. Edmonds, \emph{Angular Momentum in Quantum Mechanics} (Princeton, 1957).  
+
+\bibitem{Racah}   G. Racah, \emph{Theory of Complex Spectra II}, Phys. Rev. {\bf 62}, 438 (1942).
+
+\bibitem{Condon}  E. U. Condon and G. H. Shortley, \emph{Theory of Atomic Spectra} (Cambridge, 1935). 
+
+\bibitem{Cowan} R. D. Cowan, \emph{The Theory of Atomic Structure and Spectra} (California, 1981).
+
+\bibitem{Fischer} Y. Qiu and C. F. Fischer, \emph{Integration by Cell Algorithm for Slater Integrals in a Spline Basis}, J. Comput. Phys. {\bf 156}, 257 (1999).
+
+\bibitem{Lindgren} I. Lindgren and J. Morrison, \emph{Atomic Many-Body Theory} (Springer-Verlag, 1982).
+
+\end{thebibliography}
+\endgroup
+
+\end{document}
