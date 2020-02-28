@@ -54,8 +54,6 @@ do lp=0,bsp_lmax
 
           if (angular.ne.0.d0) then
 
-           write(99,'(9(1x,I2),3(1x,ES20.12E02))')k,lp,lq,mp,mq,lu,lt,mu,mt,bsp_full_ck(lp,mp,lq,mq,k),bsp_full_ck(lu,mu,lt,mt,k),angular
-
            !=================================
            !radial integration...Rk(p,q|t,u):
            !=================================

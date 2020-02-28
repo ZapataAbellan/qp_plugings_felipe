@@ -1,7 +1,7 @@
-      BEGIN_PROVIDER [ double precision, bsp_full_ck, (0:bsp_dlmax,-bsp_dlmax:bsp_dlmax,0:bsp_dlmax,-bsp_dlmax:bsp_dlmax,0:bsp_dlmax)]
+      BEGIN_PROVIDER [ double precision, bsp_full_ck_no_phase_choice, (0:bsp_dlmax,-bsp_dlmax:bsp_dlmax,0:bsp_dlmax,-bsp_dlmax:bsp_dlmax,0:bsp_dlmax)]
       BEGIN_DOC
-      !Provides ALL the spherical-harmonic full matrix elements < l m | C^k_(m-m') | l' m' > 
-      !Those matrix elements are named as the Gaunt coefficients
+      !Provides the Gaunt coefficients c^k(l, m; lp, mp) = < l m | C^k_(m-m') | l' m' > 
+      !Symmetry : c^k(l, m; lp, mp) = (-1)^(m-mp) c^k(lp, mp; l, m)
       END_DOC
       
       implicit none 
@@ -18,7 +18,7 @@
          do m=-l,l
           do mp=-lp,lp
 
-           bsp_full_ck(l,m,lp,mp,k) = (-1.d0)**(l+m)*bsp_reduced_ck(l,lp,k)*bsp_racah_v(l,lp,k,-m,mp,m-mp)
+           bsp_full_ck_no_phase_choice(l,m,lp,mp,k) = (-1.d0)**(l+m)*bsp_reduced_ck(l,lp,k)*bsp_racah_v(l,lp,k,-m,mp,m-mp)
 
           enddo
          enddo
@@ -27,8 +27,63 @@
 
        enddo
       enddo
+      END_PROVIDER 
+
+      BEGIN_PROVIDER [integer, nmax_lm]
+       implicit none
+       nmax_lm = (bsp_dlmax+1)*(2*bsp_dlmax+1)
+      END_PROVIDER 
+
+      BEGIN_PROVIDER [integer, index_lm_prov,(0:bsp_dlmax,-bsp_dlmax:bsp_dlmax)]
+      implicit none
+      integer :: l,m,ii
+      ii = 0
+       do l=0,bsp_dlmax
+         do m=-l,l
+          ii +=1 
+          index_lm_prov(l,m) = ii
+         enddo
+       enddo
+      END_PROVIDER
+
+      BEGIN_PROVIDER [integer, index_lm_rev_prov,(nmax_lm,2)]
+       implicit none
+       integer :: l,m,ii
+       do l=0,bsp_dlmax
+         do m=-l,l 
+          ii = index_lm_prov(l,m) 
+          index_lm_rev_prov(ii,1) = l
+          index_lm_rev_prov(ii,2) = m
+         enddo
+       enddo
+      END_PROVIDER
+      
+      BEGIN_PROVIDER [ double precision, bsp_full_ck, (0:bsp_dlmax,-bsp_dlmax:bsp_dlmax,0:bsp_dlmax,-bsp_dlmax:bsp_dlmax,0:bsp_dlmax)]
+      BEGIN_DOC
+      !Provides ALL the spherical-harmonic full matrix elements < l m | C^k_(m-m') | l' m' > 
+      !Those matrix elements are named as the Gaunt coefficients
+      END_DOC
+      implicit none
+      integer :: ii,jj,l,m,lp,mp
+      integer :: k
+
+      bsp_full_ck = bsp_full_ck_no_phase_choice
+
+      do k=0,bsp_dlmax
+       do ii = 1, nmax_lm
+        l = index_lm_rev_prov(ii,1)
+        m = index_lm_rev_prov(ii,2)
+        do jj = ii, nmax_lm
+         lp = index_lm_rev_prov(jj,1)
+         mp = index_lm_rev_prov(jj,2)
+         !           (I,J)
+         bsp_full_ck(l,m,lp,mp,k) = bsp_full_ck(lp,mp,l,m,k)
+        enddo
+       enddo
+      enddo
 
       END_PROVIDER 
+
        
       BEGIN_PROVIDER [double precision, bsp_reduced_ck, (0:bsp_qlmax,0:bsp_qlmax,0:bsp_qlmax)]
       BEGIN_DOC

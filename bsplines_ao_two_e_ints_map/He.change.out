@@ -1,0 +1,42 @@
+Date: 28/02/2020 13:54:32
+===============
+Quantum Package
+===============
+
+Git Commit: Fixed selection weight on slaves
+Git Date  : Tue Nov 19 20:54:03 2019 +0100
+Git SHA1  : 98857368ee2b6214cc9267c3bf95483c3aef49e9
+EZFIO Dir : He
+
+
+Task server running : tcp://127.0.1.1:41279
+.. >>>>> [ IO READ: bsp_lmax ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.001530 GB ] [ VIRT MEM :       0.026718 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.007243  s ] [ CPU  TIME:       0.003359  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_number ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.001530 GB ] [ VIRT MEM :       0.026718 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.007456  s ] [ CPU  TIME:       0.003512  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_order ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.003036 GB ] [ VIRT MEM :       0.028076 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.010945  s ] [ CPU  TIME:       0.006981  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_glp ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.003036 GB ] [ VIRT MEM :       0.028076 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.011096  s ] [ CPU  TIME:       0.007028  s ] <<<<< ..
+
+.. >>>>> [ IO READ: bsp_box_size ] <<<<< ..
+
+.. >>>>> [ RES  MEM :       0.003036 GB ] [ VIRT MEM :       0.028076 GB ] <<<<< ..
+.. >>>>> [ WALL TIME:       0.011248  s ] [ CPU  TIME:       0.007130  s ] <<<<< ..
+
+ two-electron integrals...
+ ao_dim           8
+ bsp_lmax           1
+Wall time: 0:00:01
+

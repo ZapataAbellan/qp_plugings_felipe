@@ -50,11 +50,11 @@ program bsplines_ezfio
 
 
          tmp  = bsp_vee_full(ao_p,ao_q,ao_t,ao_u)
- 
-!     if ( dabs(tmp) .gt. 1.d-10 ) then
-!      if ( dabs(tmp2-tmp)/dabs(tmp) .gt. 1.d-5) then
+         tmp2 = bsp_vee_full(ao_u,ao_t,ao_p,ao_q)
+
+     if ( (dabs(tmp)-dabs(tmp2) .gt. 1.d-10)) then
 ! 
-      write(55,'("ao_p, ao_q, ao_t, ao_u",4(1x,I6),1x,ES20.12E02)') ao_p, ao_q, ao_t, ao_u, tmp
+      write(55,'("ao_p, ao_q, ao_t, ao_u",4(1x,I6),3(1x,ES20.12E02))') ao_p, ao_q, ao_t, ao_u, tmp, tmp2
       write(55,'("rp  , rq  , rt  , ru  ",4(1x,I6))') rp, rq, rt, ru
       write(55,'("lp  , lq  , lt  , lu  ",4(1x,I6))') lp, lq, lt, lu
       write(55,'("mp  , mq  , mt  , mu  ",4(1x,I6))') mp, mq, mt, mu
@@ -62,7 +62,7 @@ program bsplines_ezfio
 !      write(55,'("Int:",1(1x,ES20.12E02))')tmp
       write(55,*)" "
 !     
-!      end if
+      end if
 !     end if
 !
 !
